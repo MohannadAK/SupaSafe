@@ -53,27 +53,24 @@ SupaSafe employs a robust security model:
 
 ## System Design
 <div align="center">
-  <img src="/Docs/System Design Diagrams/PipeLine.png
-  " alt="System Architecture" />
+  <img src="~/Docs/System Design Diagrams/HighLevel System OverView.png" alt="System Architecture" />
 </div>
 
 
 ## PipeLine
 
 <div align="center">
-  <img src="/Docs/System Design Diagrams/HighLevel System OverView.png" alt="Pipeline Diagram" />
+  <img src="/Docs/System Design Diagrams/PipeLine.png" alt="Pipeline Diagram" />
 </div>
 
 ## ERD
 <div align="center">
-  <img src="/Docs/Database Design-Schema/ERD.png
-  " alt="ERD" />
+  <img src="/Docs/Database Design-Schema/ERD.png" alt="ERD" />
 </div>
 
 ## Database Schema
 <div align="center">
-  <img src="/Docs/Database Design-Schema/Database Schema.png
-  " alt="Database Schema" />
+  <img src="/Docs/Database Design-Schema/Database Schema.png" alt="Database Schema" />
 </div>
 
 
@@ -170,8 +167,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🔗 Links
 
-- [Website](https://supasafe.example.com)
-- [Documentation](https://docs.supasafe.example.com)
+- [Website](https://supasafe-showcase.vercel.app/)
 - [Report a Bug](https://github.com/yourusername/supasafe/issues)
 - [Request a Feature](https://github.com/yourusername/supasafe/issues)
 
