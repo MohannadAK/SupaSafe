@@ -53,7 +53,7 @@ SupaSafe employs a robust security model:
 
 ## System Design
 <div align="center">
-  <img src="~/Docs/System Design Diagrams/HighLevel System OverView.png" alt="System Architecture" />
+  <img src="/Docs/System Design Diagrams/HighLevel System OverView.png" alt="System Architecture" />
 </div>
 
 
