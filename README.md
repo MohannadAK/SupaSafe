@@ -2,7 +2,7 @@
 
 <div align="center">
   
-![SupaSafe Logo](https://via.placeholder.com/200x200.png?text=SupaSafe)
+![SupaSafe Logo](/Docs/Logo.jpg)
 
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
 [![Node.js](https://img.shields.io/badge/Node.js-43853D?style=flat&logo=node.js&logoColor=white)](https://nodejs.org/)
