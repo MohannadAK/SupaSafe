@@ -21,26 +21,10 @@ SupaSafe is a high-security password management solution designed with enterpris
 </div>
 
 <div align="center">
-  <a href="https://supasafe-showcase.vercel.app/" target="_blank" style="text-decoration: none;">
-    <div style="
-      display: inline-block;
-      background: linear-gradient(135deg, #007bff, #0056b3);
-      color: white;
-      padding: 12px 24px;
-      border-radius: 8px;
-      font-size: 16px;
-      font-weight: bold;
-      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-      transition: transform 0.2s, box-shadow 0.2s;
-    "
-    onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0px 6px 12px rgba(0, 0, 0, 0.3)';"
-    onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0px 4px 8px rgba(0, 0, 0, 0.2)';">
-      🚀 SupaSafe Showcase
-    </div>
+  <a href="https://supasafe-showcase.vercel.app/" target="_blank">
+    <img src="https://img.shields.io/badge/SupaSafe-Showcase-blue?style=for-the-badge" alt="SupaSafe Showcase" />
   </a>
 </div>
-
-
 
 ## ✨ Key Features
 
