@@ -121,26 +121,34 @@ sequenceDiagram
 ## 📊 Project Structure
 
 ```
-SupaSafe/
+SupaSafe-Client/
 │── client/                # Frontend React application
 │   ├── public/            # Static assets
-│   │   ├── components/    # UI components
-│   │   ├── pages/         # Application pages
-│   │   ├── services/      # API service layer
-│   │   ├── utils/         # Helper utilities
-│   │   └── store/         # Redux store
-│── server/                # Backend Node.js application
-│   ├── src/               # Source code
-│   │   ├── controllers/   # API controllers
-│   │   ├── services/      # Business logic
-│   │   ├── models/        # Database models
-│   │   ├── middleware/    # Express middleware
-│   │   ├── utils/         # Helper functions
-│   │   └── config/        # Configuration
-│   ├── tests/             # Unit and integration tests
+│   └── src/               # Source code
+│       ├── components/    # UI components
+│       ├── pages/         # Application pages
+│       ├── services/      # API service layer
+│       ├── utils/         # Helper utilities
+│       └── store/         # Redux store
+│
+│── SupaSafe-Server/  # Backend Node.js application
+│   ├── src/                   # Source code
+│   │   ├── config/            # Configuration files
+│   │   ├── controllers/       # Request handlers
+│   │   ├── middleware/        # Express middleware
+│   │   ├── models/            # Data models
+│   │   ├── routes/            # API routes
+│   │   ├── services/          # Business logic
+│   │   ├── utils/             # Utility functions
+│   │   └── app.js             # Express application setup
+│   │
+│   ├── migrations/            # Database migration scripts
+│   ├── tests/                 # Test suites
+│   └── [configuration files]  # Package.json, .env, etc.
+│
 │── docker/                # Docker configuration
 │── .github/workflows/     # CI/CD pipeline definitions
-│── docs/                  # Documentation
+└── docs/                  # Documentation
 ```
 
 ## 🚀 Getting Started
