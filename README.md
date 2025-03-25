@@ -17,7 +17,7 @@
 SupaSafe is a high-security password management solution designed with enterprise-grade encryption standards. Our application empowers users to securely store, manage, and retrieve sensitive credentials through an intuitive interface while maintaining rigorous security protocols.
 
 <div align="center">
-  <img src="https://via.placeholder.com/800x400.png?text=SupaSafe+Dashboard" alt="SupaSafe Dashboard" />
+  <img src="/Docs/UI Mockups-Design/Dashboard.png" alt="SupaSafe Dashboard" />
 </div>
 
 ## ✨ Key Features
@@ -47,50 +47,35 @@ SupaSafe employs a robust security model:
    - Forward secrecy implementation
    - Regular security audits
 
+## System Design
 <div align="center">
-  <img src="https://via.placeholder.com/600x300.png?text=Security+Architecture" alt="Security Architecture" />
+  <img src="/Docs/System Design Diagrams/PipeLine.png
+  " alt="System Architecture" />
 </div>
 
-## 🌐 User Workflow
-
+## ERD
 <div align="center">
-  <img src="https://via.placeholder.com/700x400.png?text=User+Workflow" alt="User Workflow Diagram" />
+  <img src="/Docs/Database Design-Schema/ERD.png
+  " alt="System Architecture" />
 </div>
 
-### Sign Up
-```mermaid
-sequenceDiagram
-    User->>Frontend: Enters email & master password
-    Frontend->>Backend: Sends registration request
-    Backend->>Database: Stores hashed master password
-    Database->>Backend: Confirms successful storage
-    Backend->>Frontend: Returns successful registration
-    Frontend->>User: Redirects to login
-```
+## Database Schema
+<div align="center">
+  <img src="/Docs/Database Design-Schema/Database Schema.png
+  " alt="System Architecture" />
+</div>
 
-### Login
-```mermaid
-sequenceDiagram
-    User->>Frontend: Enters email & master password
-    Frontend->>Backend: Sends login request
-    Backend->>Database: Verifies credentials
-    Backend->>Backend: Derives encryption key
-    Backend->>Frontend: Returns JWT with encrypted key
-    Frontend->>Local Storage: Stores authentication token
-    Frontend->>User: Shows password dashboard
-```
+## PipeLine
 
-### Password Management
-```mermaid
-sequenceDiagram
-    User->>Frontend: Requests to add/view passwords
-    Frontend->>Backend: Sends request with JWT
-    Backend->>Backend: Decrypts key from JWT
-    Backend->>Database: Encrypts/decrypts password data
-    Database->>Backend: Returns operation result
-    Backend->>Frontend: Returns processed data
-    Frontend->>User: Displays result
-```
+<div align="center">
+  <img src="/Docs/System Design Diagrams/HighLevel System OverView.png" alt="User Workflow Diagram" />
+</div>
+
+
+
+
+
+
 
 ## 🧠 Technical Stack
 
