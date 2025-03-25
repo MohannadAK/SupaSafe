@@ -20,6 +20,10 @@ SupaSafe is a high-security password management solution designed with enterpris
   <img src="/Docs/UI Mockups-Design/Dashboard.png" alt="SupaSafe Dashboard" />
 </div>
 
+<a href="https://supasafe-showcase.vercel.app/" target="_blank" rel="noopener noreferrer">
+    SupaSafe Showcase
+</a>
+
 ## ✨ Key Features
 
 - **End-to-End Encryption**: AES-256 encryption for all stored credentials
@@ -53,27 +57,24 @@ SupaSafe employs a robust security model:
   " alt="System Architecture" />
 </div>
 
+
+## PipeLine
+
+<div align="center">
+  <img src="/Docs/System Design Diagrams/HighLevel System OverView.png" alt="Pipeline Diagram" />
+</div>
+
 ## ERD
 <div align="center">
   <img src="/Docs/Database Design-Schema/ERD.png
-  " alt="System Architecture" />
+  " alt="ERD" />
 </div>
 
 ## Database Schema
 <div align="center">
   <img src="/Docs/Database Design-Schema/Database Schema.png
-  " alt="System Architecture" />
+  " alt="Database Schema" />
 </div>
-
-## PipeLine
-
-<div align="center">
-  <img src="/Docs/System Design Diagrams/HighLevel System OverView.png" alt="User Workflow Diagram" />
-</div>
-
-
-
-
 
 
 
