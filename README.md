@@ -147,7 +147,7 @@ SupaSafe-Client/
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/supasafe.git
+git clone https://github.com/MohannadAK/supasafe.git
 cd supasafe
 
 # Install dependencies
