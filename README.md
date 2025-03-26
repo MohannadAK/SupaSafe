@@ -170,8 +170,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 🔗 Links
 
 - [Website](https://supasafe-showcase.vercel.app/)
-- [Report a Bug](https://github.com/yourusername/supasafe/issues)
-- [Request a Feature](https://github.com/yourusername/supasafe/issues)
+- [Report a Bug](https://github.com/MohannadAK/supasafe/issues)
+- [Request a Feature](https://github.com/MohannadAK/supasafe/issues)
 
 ---
 
