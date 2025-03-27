@@ -1,5 +1,23 @@
 # SupaSafe - Secure Password Management
 
+## 👥 Meet the  SupaSafe Team
+
+
+
+👤 **[Ahmed Tawfik (Ahmed0Tawfik)]**
+
+👤 **[Ahmed Elbahgy (ahmedelbahgy22)]**
+
+👤 **[Menna Selim (MeN1na)]**   
+
+👤 **[Mohannad Abdelkarim (MohannadAK)]**   
+
+👤 **[Mahmoud Almokaber (Mahmoud-Elmokaber)]** 
+
+👤 **[Abdullah Elsheshtawy (Abdoshsht226)]**   
+
+
+
 <div align="center">
   
 ![SupaSafe Logo](/Docs/Logo.jpg)
