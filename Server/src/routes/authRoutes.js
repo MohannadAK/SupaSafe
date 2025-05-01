@@ -1,18 +1,35 @@
 const express = require('express');
-const router = express.Router();
 const authController = require('../controllers/authController');
-const { validateLogin, validateRegistration } = require('../middleware/validation');
+const { authenticateJWT } = require('../middleware/authMiddleware');
 
-// Register new user
-router.post('/register', validateRegistration, authController.register);
+const router = express.Router();
 
-// Login user
-router.post('/login', validateLogin, authController.login);
+/**
+ * @route POST /api/auth/signup
+ * @desc Register a new user
+ * @access Public
+ */
+router.post('/signup', authController.register);
 
-// Refresh token
-router.post('/refresh-token', authController.refreshToken);
+/**
+ * @route POST /api/auth/login
+ * @desc Login user and get token
+ * @access Public
+ */
+router.post('/login', authController.login);
 
-// Logout
+/**
+ * @route POST /api/auth/logout
+ * @desc Logout user (client should discard token)
+ * @access Public
+ */
 router.post('/logout', authController.logout);
 
-module.exports = router; 
+/**
+ * @route PUT /api/auth/change-password
+ * @desc Change user's master password
+ * @access Private
+ */
+router.put('/change-password', authenticateJWT, authController.changeMasterPassword);
+
+module.exports = router;

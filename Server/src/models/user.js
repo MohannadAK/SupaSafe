@@ -3,41 +3,61 @@ const { Model, DataTypes } = require('sequelize');
 module.exports = (sequelize) => {
   class User extends Model {
     static associate(models) {
-      // Define associations here (if any, like a one-to-many or many-to-many relationship)
-      // For example:
-      // User.hasMany(models.Post);
+      User.hasMany(models.Password, {
+        foreignKey: 'userId',
+        as: 'passwords'
+      });
     }
   }
 
-  User.init(
-    {
-      // Define your attributes (columns) here
-      username: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: true,
-      },
-      email: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: true,
-        validate: {
-          isEmail: true,
-        },
-      },
-      password: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      // Add any other fields (e.g., first_name, last_name, etc.)
+  User.init({
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      primaryKey: true
     },
-    {
-      sequelize,
-      modelName: 'User',
-      tableName: 'users', // You can specify the table name if you don't want Sequelize to pluralize
-      timestamps: true,   // Adds `createdAt` and `updatedAt` automatically
+    email: {
+      type: DataTypes.STRING(255),
+      allowNull: false,
+      unique: true,
+      validate: {
+        isEmail: true
+      }
+    },
+    hashedPass: {
+      type: DataTypes.STRING(60),
+      allowNull: false
+    },
+    salt: {
+      type: DataTypes.STRING(60),
+      allowNull: false
+    },
+    encryptedDEK: {
+      type: DataTypes.STRING(44),
+      allowNull: false
+    },
+    dekIV: {
+      type: DataTypes.STRING(32), // Increased from 24 to 32
+      allowNull: false
+    },
+    lastUpdate: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW
+    },
+    creationDate: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW
+    },
+    keyCreationDate: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW
     }
-  );
+  }, {
+    sequelize,
+    modelName: 'User',
+    tableName: 'users',
+    timestamps: false
+  });
 
   return User;
 };

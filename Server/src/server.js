@@ -1,25 +1,41 @@
-require('dotenv').config();
 const app = require('./app');
 const { sequelize } = require('./models');
-const logger = require('./utils/logger');
 
+// Set port from environment variable or default to 3000
 const PORT = process.env.PORT || 3000;
 
-// Connect to database and start server
-async function startServer() {
+// Start the server
+const startServer = async () => {
   try {
     // Test database connection
     await sequelize.authenticate();
-    logger.info('Database connection has been established successfully.');
-    
-    // Start server
+    console.log('Database connection has been established successfully.');
+
+    // Sync database (creates tables if they don't exist)
+    await sequelize.sync({ force: false }); // Set force: true to drop and recreate (use cautiously)
+    console.log('Database synced');
+
+    // Start listening
     app.listen(PORT, () => {
-      logger.info(`Server running on port ${PORT}`);
+      console.log(`Server running on port ${PORT}`);
     });
   } catch (error) {
-    logger.error('Unable to connect to the database or start server:', error);
+    console.error('Unable to connect to the database:', error);
     process.exit(1);
   }
-}
+};
 
-startServer(); 
+// Handle uncaught exceptions
+process.on('uncaughtException', (error) => {
+  console.error('Uncaught Exception:', error);
+  process.exit(1);
+});
+
+// Handle unhandled promise rejections
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+  process.exit(1);
+});
+
+// Start server
+startServer();
