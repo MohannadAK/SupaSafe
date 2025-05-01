@@ -21,10 +21,7 @@ module.exports = {
     dialect: 'postgres',
     logging: console.log,
     dialectOptions: {
-      ssl: {
-        require: true,
-        rejectUnauthorized: false,
-      },
+      ssl: false,  // Local databases don't need SSL
     },
     pool: {
       max: 5,
@@ -42,10 +39,7 @@ module.exports = {
     dialect: 'postgres',
     logging: false,
     dialectOptions: {
-      ssl: {
-        require: true,
-        rejectUnauthorized: false,
-      },
+      ssl: false,  // Local databases don't need SSL
     },
   },
   production: {
@@ -57,10 +51,7 @@ module.exports = {
     dialect: 'postgres',
     logging: false,
     dialectOptions: {
-      ssl: {
-        require: true,
-        rejectUnauthorized: false,
-      },
+      ssl: false,  // Local databases don't need SSL
     },
     pool: {
       max: 10,

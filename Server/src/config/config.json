@@ -1,0 +1,26 @@
+{
+  "development": {
+    "username": "SupaSafe",
+    "password": "ffApmGNYpZMVtPor",
+    "database": "supasafe_db",
+    "host": "localhost",
+    "port": 5432,
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "SupaSafe",
+    "password": "ffApmGNYpZMVtPor",
+    "database": "supasafe_db_test",
+    "host": "localhost",
+    "port": 5432,
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "SupaSafe",
+    "password": "ffApmGNYpZMVtPor",
+    "database": "supasafe_db",
+    "host": "localhost",
+    "port": 5432,
+    "dialect": "postgres"
+  }
+}
