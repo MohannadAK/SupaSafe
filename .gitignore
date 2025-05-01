@@ -1,0 +1,41 @@
+# Node.js dependencies
+SupaSafe-Server/node_modules/
+SupaSafe-Server/.pnp
+SupaSafe-Server/.pnp.js
+
+# Environment variables
+SupaSafe-Server/.env
+SupaSafe-Server/.env.local
+SupaSafe-Server/.env.development.local
+SupaSafe-Server/.env.test.local
+SupaSafe-Server/.env.production.local
+
+# Logs
+SupaSafe-Server/logs
+SupaSafe-Server/*.log
+SupaSafe-Server/npm-debug.log*
+SupaSafe-Server/yarn-debug.log*
+SupaSafe-Server/yarn-error.log*
+
+# Coverage directory used by tools like istanbul
+SupaSafe-Server/coverage
+
+# Dependency directories
+SupaSafe-Server/.npm
+SupaSafe-Server/.yarn
+
+# Optional npm cache directory
+SupaSafe-Server/.npm
+
+# Optional eslint cache
+SupaSafe-Server/.eslintcache
+
+# Build outputs
+SupaSafe-Server/dist
+SupaSafe-Server/build
+
+# IDE specific files
+.idea/
+.vscode/
+*.swp
+*.swo
