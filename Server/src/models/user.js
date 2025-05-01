@@ -1,63 +1,43 @@
-const bcrypt = require('bcrypt');
+const { Model, DataTypes } = require('sequelize');
 
-module.exports = (sequelize, DataTypes) => {
-  const User = sequelize.define('User', {
-    id: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
-      primaryKey: true
-    },
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    email: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
-      validate: {
-        isEmail: true
-      }
-    },
-    password: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    role: {
-      type: DataTypes.ENUM('user', 'admin'),
-      defaultValue: 'user'
-    },
-    active: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: true
+module.exports = (sequelize) => {
+  class User extends Model {
+    static associate(models) {
+      // Define associations here (if any, like a one-to-many or many-to-many relationship)
+      // For example:
+      // User.hasMany(models.Post);
     }
-  }, {
-    timestamps: true,
-    paranoid: true, // Soft delete
-    hooks: {
-      beforeCreate: async (user) => {
-        if (user.password) {
-          user.password = await bcrypt.hash(user.password, 10);
-        }
+  }
+
+  User.init(
+    {
+      // Define your attributes (columns) here
+      username: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
       },
-      beforeUpdate: async (user) => {
-        if (user.changed('password')) {
-          user.password = await bcrypt.hash(user.password, 10);
-        }
-      }
+      email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+        validate: {
+          isEmail: true,
+        },
+      },
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      // Add any other fields (e.g., first_name, last_name, etc.)
+    },
+    {
+      sequelize,
+      modelName: 'User',
+      tableName: 'users', // You can specify the table name if you don't want Sequelize to pluralize
+      timestamps: true,   // Adds `createdAt` and `updatedAt` automatically
     }
-  });
-
-  // Instance methods
-  User.prototype.verifyPassword = async function(password) {
-    return await bcrypt.compare(password, this.password);
-  };
-
-  // Class methods
-  User.associate = function(models) {
-    // Define associations here
-    // Example: User.hasMany(models.Post)
-  };
+  );
 
   return User;
-}; 
+};
