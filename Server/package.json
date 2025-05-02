@@ -11,7 +11,8 @@
     "migrate:undo": "sequelize-cli db:migrate:undo",
     "migrate:reset": "sequelize-cli db:migrate:undo:all && npm run migrate",
     "seed": "sequelize-cli db:seed:all",
-    "seed:undo": "sequelize-cli db:seed:undo:all"
+    "seed:undo": "sequelize-cli db:seed:undo:all",
+    "create-db": "node src/createDbIfNotExists.js"
   },
   "keywords": [
     "password",
