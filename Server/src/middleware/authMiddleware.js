@@ -1,9 +1,10 @@
 /**
  * File: middleware/authMiddleware.js
- * Description: Authentication middleware
+ * Description: Authentication middleware with token invalidation
  */
 
 const jwt = require('jsonwebtoken');
+const { User } = require('../models');
 const cryptoService = require('../services/cryptoService');
 require('dotenv').config();
 
@@ -13,7 +14,7 @@ const JWT_SECRET = process.env.JWT_SECRET || 'dev_secret';
  * Middleware to verify JWT and establish authentication
  * Implements FR2 validation and NFR5 key protection
  */
-exports.authenticateJWT = (req, res, next) => {
+exports.authenticateJWT = async (req, res, next) => {
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -25,6 +26,21 @@ exports.authenticateJWT = (req, res, next) => {
   try {
     // Verify the token
     const decoded = jwt.verify(token, JWT_SECRET);
+
+    // Find the user to check token version
+    const user = await User.findByPk(decoded.id);
+    if (!user) {
+      return res.status(401).json({ error: 'User not found' });
+    }
+
+    // If token version doesn't match or is missing, token is invalid
+    if (decoded.tokenVersion === undefined || decoded.tokenVersion !== user.tokenVersion) {
+      return res.status(401).json({
+        error: 'Invalid token',
+        code: 'TOKEN_VERSION_MISMATCH',
+        message: 'Your credentials have changed. Please log in again.'
+      });
+    }
 
     // Extract user information
     req.user = {
