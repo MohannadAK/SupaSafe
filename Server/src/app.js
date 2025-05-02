@@ -2,22 +2,29 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
-const { errorHandler } = require('./middleware/errorHandler');
 const routes = require('./routes');
 
+// Create Express app
 const app = express();
 
-// Middleware
+// Apply middleware
 app.use(helmet()); // Security headers
-app.use(cors()); // CORS support
-app.use(morgan('dev')); // Logging
-app.use(express.json()); // Parse JSON bodies
-app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
+app.use(cors()); // Enable CORS for all routes
+app.use(express.json()); // Parse JSON request bodies
+app.use(morgan('dev')); // HTTP request logger
 
-// API Routes
+// Apply routes
 app.use('/api', routes);
 
-// Error Handling
-app.use(errorHandler);
+// Error handling middleware
+app.use((err, req, res, next) => {
+    console.error(err.stack);
 
-module.exports = app; 
+    res.status(500).json({
+        success: false,
+        message: 'Internal server error',
+        error: process.env.NODE_ENV === 'development' ? err.message : undefined
+    });
+});
+
+module.exports = app;
