@@ -29,15 +29,15 @@ module.exports = (sequelize) => {
       allowNull: false
     },
     salt: {
-      type: DataTypes.STRING(60),
+      type: DataTypes.STRING(64),
       allowNull: false
     },
     encryptedDEK: {
-      type: DataTypes.STRING(44),
+      type: DataTypes.TEXT,
       allowNull: false
     },
     dekIV: {
-      type: DataTypes.STRING(32), // Increased from 24 to 32
+      type: DataTypes.STRING(64),
       allowNull: false
     },
     lastUpdate: {
@@ -51,6 +51,12 @@ module.exports = (sequelize) => {
     keyCreationDate: {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW
+    },
+    // Add token version to track password changes
+    tokenVersion: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0
     }
   }, {
     sequelize,

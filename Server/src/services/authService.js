@@ -42,6 +42,9 @@ class AuthService {
         // Encrypt the DEK with the KEK
         const { encryptedDEK, iv: dekIV } = cryptoService.encryptDEK(dek, kek);
 
+        // Initialize token version to 0
+        const tokenVersion = 0;
+
         // Create the user in the database
         const newUser = await User.create({
             email,
@@ -49,7 +52,10 @@ class AuthService {
             salt,
             encryptedDEK,
             dekIV,
-            keyCreationDate: new Date()
+            keyCreationDate: new Date(),
+            creationDate: new Date(),
+            lastUpdate: new Date(),
+            tokenVersion
         });
 
         // Encrypt KEK for JWT
@@ -61,7 +67,8 @@ class AuthService {
                 id: newUser.id,
                 email: newUser.email,
                 encryptedKEK,
-                kekIV
+                kekIV,
+                tokenVersion // Include token version in the JWT
             },
             JWT_SECRET,
             { expiresIn: '24h' }
@@ -106,7 +113,8 @@ class AuthService {
                 id: user.id,
                 email: user.email,
                 encryptedKEK,
-                kekIV
+                kekIV,
+                tokenVersion: user.tokenVersion // Include token version in the JWT
             },
             JWT_SECRET,
             { expiresIn: '24h' }
@@ -170,13 +178,17 @@ class AuthService {
         // Re-encrypt DEK with new KEK
         const { encryptedDEK: newEncryptedDEK, iv: newDekIV } = cryptoService.encryptDEK(dek, newKEK);
 
+        // Increment token version to invalidate old tokens
+        const newTokenVersion = (user.tokenVersion || 0) + 1;
+
         // Update user record
         await user.update({
             hashedPass: newHashedPass,
             salt: newSalt,
             encryptedDEK: newEncryptedDEK,
             dekIV: newDekIV,
-            lastUpdate: new Date()
+            lastUpdate: new Date(),
+            tokenVersion: newTokenVersion
         });
 
         // Encrypt new KEK for JWT
@@ -188,7 +200,8 @@ class AuthService {
                 id: user.id,
                 email: user.email,
                 encryptedKEK,
-                kekIV
+                kekIV,
+                tokenVersion: newTokenVersion // Include updated token version in the JWT
             },
             JWT_SECRET,
             { expiresIn: '24h' }
