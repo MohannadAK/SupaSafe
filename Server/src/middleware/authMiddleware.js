@@ -1,10 +1,13 @@
+/**
+ * File: middleware/authMiddleware.js
+ * Description: Authentication middleware
+ */
+
 const jwt = require('jsonwebtoken');
-const crypto = require('crypto');
+const cryptoService = require('../services/cryptoService');
 require('dotenv').config();
 
 const JWT_SECRET = process.env.JWT_SECRET || 'dev_secret';
-// KEY_ENCRYPTION_SECRET must be exactly 32 bytes (256 bits) for AES-256
-const KEY_ENCRYPTION_SECRET = process.env.KEY_ENCRYPTION_SECRET || crypto.randomBytes(32).toString('base64');
 
 /**
  * Middleware to verify JWT and establish authentication
@@ -32,28 +35,8 @@ exports.authenticateJWT = (req, res, next) => {
     // Decrypt the KEK if needed for password operations
     if (decoded.encryptedKEK && decoded.kekIV) {
       try {
-        // Ensure key is exactly 32 bytes (256 bits) for AES-256-CBC
-        let secretKey;
-        if (Buffer.from(KEY_ENCRYPTION_SECRET, 'base64').length !== 32) {
-          // If not 32 bytes, derive a 32-byte key using SHA-256
-          secretKey = crypto.createHash('sha256')
-            .update(KEY_ENCRYPTION_SECRET)
-            .digest();
-        } else {
-          secretKey = Buffer.from(KEY_ENCRYPTION_SECRET, 'base64');
-        }
-
-        const decipher = crypto.createDecipheriv(
-          'aes-256-cbc',
-          secretKey,
-          Buffer.from(decoded.kekIV, 'base64')
-        );
-
-        let decrypted = decipher.update(Buffer.from(decoded.encryptedKEK, 'base64'), 'base64', 'binary');
-        decrypted += decipher.final('binary');
-
-        // Make KEK available for routes that need it
-        req.kek = Buffer.from(decrypted, 'binary');
+        // Decrypt KEK for operations that require it
+        req.kek = cryptoService.decryptKEKFromJWT(decoded.encryptedKEK, decoded.kekIV);
       } catch (decryptError) {
         console.error('KEK decryption error:', decryptError);
         // Continue even if KEK decryption fails - some routes may not need it

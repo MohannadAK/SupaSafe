@@ -1,165 +1,215 @@
+/**
+ * File: services/authService.js
+ * Description: Authentication service that uses cryptoService
+ */
+
 const jwt = require('jsonwebtoken');
 const { User } = require('../models');
 const cryptoService = require('./cryptoService');
-const authConfig = require('../config/auth');
+require('dotenv').config();
+
+const JWT_SECRET = process.env.JWT_SECRET || 'dev_secret';
 
 /**
  * Authentication service
  */
 class AuthService {
     /**
-     * Create a new user account
+     * Create a new user account (FR1)
      * @param {string} email - User email
-     * @param {string} masterPassword - User master password
-     * @returns {Promise<{user: User, kek: Buffer}>} - Created user and derived KEK
+     * @param {string} password - User master password
+     * @returns {Promise<{user: Object, token: string}>} - Created user and token
      */
-    async signup(email, masterPassword) {
+    async signup(email, password) {
+        // Check if user already exists
+        const existingUser = await User.findOne({ where: { email } });
+        if (existingUser) {
+            throw new Error('User already exists');
+        }
+
         // Hash the master password
-        const { hash, salt } = await cryptoService.hashMasterPassword(masterPassword);
+        const { hash: hashedPass, salt: bcryptSalt } = await cryptoService.hashMasterPassword(password);
 
         // Generate a new salt for PBKDF2 derivation of KEK
-        const pbkdf2Salt = cryptoService.generateRandomBytes(16).toString('base64');
+        const salt = cryptoService.generateRandomBytes(16).toString('base64');
 
         // Derive the KEK from the master password and salt
-        const kek = cryptoService.deriveKEK(masterPassword, pbkdf2Salt);
+        const kek = cryptoService.deriveKEK(password, salt);
 
         // Generate a random DEK
         const dek = cryptoService.generateDEK();
 
         // Encrypt the DEK with the KEK
-        const { encryptedDEK, iv } = cryptoService.encryptDEK(dek, kek);
+        const { encryptedDEK, iv: dekIV } = cryptoService.encryptDEK(dek, kek);
 
         // Create the user in the database
-        const user = await User.create({
+        const newUser = await User.create({
             email,
-            hashedPass: hash,
-            salt: pbkdf2Salt,
+            hashedPass,
+            salt,
             encryptedDEK,
-            dekIV: iv
+            dekIV,
+            keyCreationDate: new Date()
         });
 
-        return { user, kek };
+        // Encrypt KEK for JWT
+        const { encryptedKEK, kekIV } = cryptoService.encryptKEKForJWT(kek);
+
+        // Generate JWT token
+        const token = jwt.sign(
+            {
+                id: newUser.id,
+                email: newUser.email,
+                encryptedKEK,
+                kekIV
+            },
+            JWT_SECRET,
+            { expiresIn: '24h' }
+        );
+
+        return {
+            user: { id: newUser.id, email: newUser.email },
+            token
+        };
     }
 
     /**
-     * Authenticate a user and return a JWT
+     * Authenticate a user and return a JWT (FR2)
      * @param {string} email - User email
-     * @param {string} masterPassword - User master password
-     * @returns {Promise<{token: string, user: User}>} - JWT and user object
+     * @param {string} password - User master password
+     * @returns {Promise<{token: string, user: Object}>} - JWT and user object
      */
-    async login(email, masterPassword) {
+    async login(email, password) {
         // Find the user by email
         const user = await User.findOne({ where: { email } });
 
         if (!user) {
-            throw new Error('User not found');
+            throw new Error('Invalid credentials');
         }
 
         // Verify the master password
-        const isValid = await cryptoService.verifyMasterPassword(masterPassword, user.hashedPass);
+        const isValid = await cryptoService.verifyMasterPassword(password, user.hashedPass);
 
         if (!isValid) {
-            throw new Error('Invalid password');
+            throw new Error('Invalid credentials');
         }
 
         // Derive the KEK from the master password and salt
-        const kek = cryptoService.deriveKEK(masterPassword, user.salt);
+        const kek = cryptoService.deriveKEK(password, user.salt);
 
-        // Encrypt the KEK for storage in the JWT
-        const encryptedKEK = cryptoService.encryptKEKForJWT(kek);
+        // Encrypt KEK for JWT
+        const { encryptedKEK, kekIV } = cryptoService.encryptKEKForJWT(kek);
 
         // Create and sign the JWT
         const token = jwt.sign(
             {
                 id: user.id,
                 email: user.email,
-                kek: encryptedKEK
+                encryptedKEK,
+                kekIV
             },
-            authConfig.jwtSecret,
-            { expiresIn: authConfig.jwtExpiresIn }
+            JWT_SECRET,
+            { expiresIn: '24h' }
         );
 
-        return { token, user };
+        return {
+            token,
+            user: { id: user.id, email: user.email }
+        };
     }
 
     /**
-     * Change a user's master password
-     * @param {string} userId - User ID
+     * Get user by ID
+     * @param {number} userId - User ID
+     * @returns {Promise<Object>} - User object
+     */
+    async getUser(userId) {
+        const user = await User.findOne({
+            where: { id: userId },
+            attributes: ['id', 'email']
+        });
+
+        return user;
+    }
+
+    /**
+     * Change a user's master password (FR6)
+     * @param {number} userId - User ID
      * @param {string} currentPassword - Current master password
      * @param {string} newPassword - New master password
-     * @returns {Promise<{token: string, user: User}>} - New JWT and updated user
+     * @returns {Promise<{token: string}>} - New JWT
      */
     async changeMasterPassword(userId, currentPassword, newPassword) {
         // Find the user
-        const user = await User.findByPk(userId);
+        const user = await User.findOne({ where: { id: userId } });
 
         if (!user) {
             throw new Error('User not found');
         }
 
-        // Verify the current password
+        // Verify current password
         const isValid = await cryptoService.verifyMasterPassword(currentPassword, user.hashedPass);
 
         if (!isValid) {
-            throw new Error('Invalid current password');
+            throw new Error('Current password is incorrect');
         }
 
-        // Derive the old KEK to decrypt the DEK
+        // Derive old KEK from current password
         const oldKEK = cryptoService.deriveKEK(currentPassword, user.salt);
 
-        // Decrypt the DEK using the old KEK
+        // Decrypt DEK with old KEK
         const dek = cryptoService.decryptDEK(user.encryptedDEK, user.dekIV, oldKEK);
 
-        // Generate a new hash and salt for the new master password
-        const { hash, salt } = await cryptoService.hashMasterPassword(newPassword);
+        // Generate new salt and hash password
+        const { hash: newHashedPass } = await cryptoService.hashMasterPassword(newPassword);
+        const newSalt = cryptoService.generateRandomBytes(16).toString('base64');
 
-        // Generate a new salt for PBKDF2 derivation of new KEK
-        const newPbkdf2Salt = cryptoService.generateRandomBytes(16).toString('base64');
+        // Derive new KEK from new password
+        const newKEK = cryptoService.deriveKEK(newPassword, newSalt);
 
-        // Derive the new KEK from the new master password and salt
-        const newKEK = cryptoService.deriveKEK(newPassword, newPbkdf2Salt);
+        // Re-encrypt DEK with new KEK
+        const { encryptedDEK: newEncryptedDEK, iv: newDekIV } = cryptoService.encryptDEK(dek, newKEK);
 
-        // Re-encrypt the DEK with the new KEK
-        const { encryptedDEK, iv } = cryptoService.encryptDEK(dek, newKEK);
+        // Update user record
+        await user.update({
+            hashedPass: newHashedPass,
+            salt: newSalt,
+            encryptedDEK: newEncryptedDEK,
+            dekIV: newDekIV,
+            lastUpdate: new Date()
+        });
 
-        // Update the user in the database
-        user.hashedPass = hash;
-        user.salt = newPbkdf2Salt;
-        user.encryptedDEK = encryptedDEK;
-        user.dekIV = iv;
-        user.lastUpdate = new Date();
-        user.keyCreationDate = new Date();
+        // Encrypt new KEK for JWT
+        const { encryptedKEK, kekIV } = cryptoService.encryptKEKForJWT(newKEK);
 
-        await user.save();
-
-        // Encrypt the new KEK for storage in the JWT
-        const encryptedKEK = cryptoService.encryptKEKForJWT(newKEK);
-
-        // Create and sign a new JWT
+        // Generate new JWT
         const token = jwt.sign(
             {
                 id: user.id,
                 email: user.email,
-                kek: encryptedKEK
+                encryptedKEK,
+                kekIV
             },
-            authConfig.jwtSecret,
-            { expiresIn: authConfig.jwtExpiresIn }
+            JWT_SECRET,
+            { expiresIn: '24h' }
         );
 
-        return { token, user };
+        return { token };
     }
 
     /**
-     * Get the DEK for a user from JWT and encrypted DEK
-     * @param {Object} decodedToken - Decoded JWT
-     * @param {User} user - User object
-     * @returns {Buffer} - Decrypted DEK
+     * Get the DEK for a user using the KEK from the request
+     * @param {number} userId - User ID
+     * @param {Buffer} kek - Key Encryption Key
+     * @returns {Promise<Buffer>} - Decrypted DEK
      */
-    getDEKFromJWT(decodedToken, user) {
-        // Decrypt the KEK from the JWT
-        const kek = cryptoService.decryptKEKFromJWT(decodedToken.kek);
+    async getDEK(userId, kek) {
+        const user = await User.findOne({ where: { id: userId } });
 
-        // Decrypt the DEK using the KEK
+        if (!user) {
+            throw new Error('User not found');
+        }
+
         return cryptoService.decryptDEK(user.encryptedDEK, user.dekIV, kek);
     }
 }
