@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { apiRequest } from '../config/api';
+import { ENDPOINTS } from '../config/api';
 
 function RegisterForm({ onRegister }) {
   const [email, setEmail] = useState('');
@@ -14,38 +16,47 @@ function RegisterForm({ onRegister }) {
     setError('');
 
     if (password !== confirmPassword) {
-      setError('Passwords do not match');
+      setError('The passwords you entered do not match. Please try again.');
+      return;
+    }
+
+    if (passwordStrength < 3) {
+      setError('Please create a stronger password with at least 10 characters, including numbers and special characters.');
       return;
     }
 
     setIsLoading(true);
-    
+
     try {
-      // API INTEGRATION POINT:
-      // Replace with actual API call to register user
-      // const response = await fetch('/api/auth/register', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ email, password })
-      // });
-      // const data = await response.json();
-      // if (data.success) {
-      //   localStorage.setItem('token', data.token);
-      //   onRegister(email, password);
-      // } else {
-      //   throw new Error(data.message || 'Registration failed');
-      // }
+      const response = await apiRequest(ENDPOINTS.REGISTER, {
+        method: 'POST',
+        body: JSON.stringify({ email, password }),
+      });
       
-      // Temporary local registration
-      setTimeout(() => {
+      if (response.message && response.token) {
+        localStorage.setItem('token', response.token);
+        localStorage.setItem('userEmail', email);
         onRegister(email, password);
-        setIsLoading(false);
-      }, 800);
+      } else {
+        handleErrorMessage(response);
+      }
     } catch (error) {
       console.error('Registration error:', error);
-      setError(error.message || 'Registration failed');
+      handleErrorResponse(error);
+    } finally {
       setIsLoading(false);
     }
+  };
+  
+  // Handle API error responses with specific status codes
+  const handleErrorResponse = (error) => {
+    setError('Unable to create your account.');
+  };
+  
+  // Handle error messages from response object
+  const handleErrorMessage = (response) => {
+    setError('Unable to create your account.');
+    
   };
 
   const checkPasswordStrength = (pass) => {
@@ -84,11 +95,23 @@ function RegisterForm({ onRegister }) {
       <p className="text-gray-600 mb-6">Create a master password to secure all your passwords</p>
 
       {error && (
-        <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-lg flex items-center">
-          <svg className="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-            <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-          </svg>
-          {error}
+        <div className="mb-4 p-4 bg-red-50 border border-red-100 text-red-700 rounded-lg flex items-center shadow-sm">
+          <div className="flex-shrink-0 mr-3">
+            <svg className="h-5 w-5 text-red-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+            </svg>
+          </div>
+          <div className="flex-1">
+            <p className="text-sm font-medium">{error}</p>
+          </div>
+          <button 
+            onClick={() => setError('')} 
+            className="ml-auto text-gray-400 hover:text-gray-500 focus:outline-none"
+          >
+            <svg className="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+            </svg>
+          </button>
         </div>
       )}
 
@@ -228,4 +251,4 @@ function RegisterForm({ onRegister }) {
   );
 }
 
-export default RegisterForm; 
+export default RegisterForm;

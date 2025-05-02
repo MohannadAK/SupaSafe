@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import AddPasswordModal from '../components/AddPasswordModal';
 import EditPasswordModal from '../components/EditPasswordModal';
 import Header from '../components/Header';
+import { ENDPOINTS } from '../config/api';
+import { apiRequest } from '../config/api';
 
 // Sample data
 const initialPasswords = [

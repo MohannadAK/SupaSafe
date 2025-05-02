@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
+import { apiRequest } from '../config/api';
+import { ENDPOINTS } from '../config/api';
 
 function AccountSettings({ onLogout }) {
   const navigate = useNavigate();
@@ -51,45 +53,45 @@ function AccountSettings({ onLogout }) {
     setError('');
     setSuccess('');
     setIsLoading(true);
-
+  
     if (newPassword !== confirmPassword) {
       setError('New passwords do not match');
       setIsLoading(false);
       return;
     }
-
+  
     if (newPassword.length < 8) {
       setError('Password must be at least 8 characters long');
       setIsLoading(false);
       return;
     }
-
+  
     try {
-      // API INTEGRATION POINT:
-      // Replace this with actual API call to change the master password
-      // Example:
-      // const token = localStorage.getItem('token');
-      // const response = await fetch('/api/user/change-password', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //     'Authorization': `Bearer ${token}`
-      //   },
-      //   body: JSON.stringify({
-      //     currentPassword,
-      //     newPassword
-      //   })
-      // });
-      // 
-      // if (!response.ok) {
-      //   const errorData = await response.json();
-      //   throw new Error(errorData.message || 'Failed to change password');
-      // }
-      
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 800));
-      
-      setSuccess('Master password has been updated successfully');
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('User is not authenticated');
+      }
+  
+      const response = await apiRequest(ENDPOINTS.CHANGE_PASSWORD, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          currentPassword,
+          newPassword,
+        }),
+      });
+  
+      // Assume apiRequest parses JSON automatically. If not, do: const data = await response.json();
+      const data = response; // or `const data = await response.json();` if apiRequest returns a fetch Response
+  
+      if (data.token) {
+        localStorage.setItem('token', data.token); // Replace old token with new one
+      }
+  
+      setSuccess(data.message || 'Password updated successfully');
       setCurrentPassword('');
       setNewPassword('');
       setConfirmPassword('');
@@ -100,7 +102,8 @@ function AccountSettings({ onLogout }) {
       setIsLoading(false);
     }
   };
-
+  
+  
   const handleDeleteAccount = async () => {
     if (window.confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
       setIsLoading(true);

@@ -1,7 +1,7 @@
 // Environment variables configuration
 const env = {
   // API configuration
-  API_BASE_URL: process.env.REACT_APP_API_BASE_URL || 'https://api.yourpasswordmanager.com/v1',
+  API_BASE_URL: process.env.REACT_APP_API_BASE_URL || 'http://localhost:3000/api',
   
   // Authentication settings
   TOKEN_EXPIRY_DAYS: parseInt(process.env.REACT_APP_TOKEN_EXPIRY_DAYS || '7', 10),

@@ -1,12 +1,13 @@
 // Base API URL - change this to your actual backend URL
-export const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'https://api.yourpasswordmanager.com/v1';
+export const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:3000/api';
 
 // API endpoints
 export const ENDPOINTS = {
   // Auth endpoints
   LOGIN: '/auth/login',
-  REGISTER: '/auth/register',
+  REGISTER: '/auth/signup',
   LOGOUT: '/auth/logout',
+  CHANGE_PASSWORD: '/auth/change-password',
   
   // Password endpoints
   PASSWORDS: '/passwords',
@@ -14,7 +15,6 @@ export const ENDPOINTS = {
   
   // User endpoints
   USER_PROFILE: '/user/profile',
-  CHANGE_PASSWORD: '/user/change-password',
   DELETE_ACCOUNT: '/user/delete-account',
 };
 

@@ -1,46 +1,76 @@
 import React, { useState } from 'react';
+import { apiRequest } from '../config/api';
+import { ENDPOINTS } from '../config/api';
 
 function LoginForm({ onLogin }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
     setIsLoading(true);
     
     try {
-      // API INTEGRATION POINT:
-      // Replace with actual API call to authenticate user
-      // const response = await fetch('/api/auth/login', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ email, password })
-      // });
-      // const data = await response.json();
-      // if (data.success) {
-      //   localStorage.setItem('token', data.token);
-      //   onLogin(email, password);
-      // } else {
-      //   throw new Error(data.message || 'Authentication failed');
-      // }
+      const response = await apiRequest(ENDPOINTS.LOGIN, {
+        method: 'POST',
+        body: JSON.stringify({ email, password }),
+      });
       
-      // Temporary local authentication
-      setTimeout(() => {
+      if (response.token) {
+        localStorage.setItem('token', response.token);
+        localStorage.setItem('userEmail', email);
         onLogin(email, password);
-        setIsLoading(false);
-      }, 800);
+      } else {
+        handleErrorMessage(response);
+      }
     } catch (error) {
       console.error('Login error:', error);
+      handleErrorResponse(error);
+    } finally {
       setIsLoading(false);
     }
+  };
+  
+  // Handle API error responses with specific status codes
+  const handleErrorResponse = (error) => {
+    // Check if the error contains HTTP status information
+    setError('Invalid Credentials');
+  };
+  
+  // Handle error messages from response object
+  const handleErrorMessage = (response) => {
+    setError('Invalid Credentials');
   };
 
   return (
     <div className="transition-all duration-300 ease-in-out">
       <h2 className="text-2xl font-bold mb-4 text-gray-800">Welcome Back</h2>
       <p className="text-gray-600 mb-6">Enter your credentials to access your secure vault</p>
+
+      {error && (
+        <div className="mb-4 p-4 bg-red-50 border border-red-100 text-red-700 rounded-lg flex items-center shadow-sm">
+          <div className="flex-shrink-0 mr-3">
+            <svg className="h-5 w-5 text-red-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+            </svg>
+          </div>
+          <div className="flex-1">
+            <p className="text-sm font-medium">{error}</p>
+          </div>
+          <button 
+            onClick={() => setError('')} 
+            className="ml-auto text-gray-400 hover:text-gray-500 focus:outline-none"
+          >
+            <svg className="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+            </svg>
+          </button>
+        </div>
+      )}
 
       <form onSubmit={handleSubmit} className="space-y-5">
         <div className="transition-all duration-300 ease-in-out transform hover:translate-y-[-2px]">
@@ -127,4 +157,4 @@ function LoginForm({ onLogin }) {
   );
 }
 
-export default LoginForm; 
+export default LoginForm;
