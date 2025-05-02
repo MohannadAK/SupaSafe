@@ -50,7 +50,7 @@ function Home({ onLogin }) {
               <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
             </svg>
           </div>
-          <h1 className="text-3xl font-bold text-gray-800">Secure Password Manager</h1>
+          <h1 className="text-3xl font-bold text-gray-800">SupaSafe</h1>
           <p className="mt-2 text-gray-600">Your passwords, secured with one master key</p>
         </div>
 

@@ -64,7 +64,7 @@ function Header({ onLogout, title }) {
               <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
             </svg>
             <Link to="/dashboard" className="text-xl font-bold text-blue-300 hover:text-blue-200 transition-colors">
-              Secure Password Manager
+              SupaSafe
             </Link>
           </div>
 
