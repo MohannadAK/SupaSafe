@@ -1,5 +1,6 @@
 const express = require('express');
 const authRoutes = require('./authRoutes');
+const passwordRoutes = require('./passwordRoutes');
 
 const router = express.Router();
 
@@ -14,6 +15,9 @@ router.get('/health', (req, res) => {
 
 // Auth routes
 router.use('/auth', authRoutes);
+
+// password routes
+router.use('/passwords', passwordRoutes);
 
 // 404 handler for API routes
 router.use((req, res) => {
