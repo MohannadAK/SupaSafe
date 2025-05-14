@@ -1,6 +1,7 @@
 const passwordController = require('../controllers/passwordsController');
 const { Password, User } = require('../models');
 const cryptoService = require('../services/cryptoService');
+const authService = require('../services/authService');
 
 /**
  * Retrieve all sites 
@@ -47,11 +48,14 @@ exports.addPassword = async (req, res) => {
   }
 
   try {
-    const user = await User.findByPk(userId);
-    if (!user) throw new Error('User not found');
+    // Validate user existence using authService (already done in middleware, but keeping for consistency)
+    const user = await authService.getUser(userId);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
 
     if (!req.user.dek) {
-      throw new Error('DEK not available for encryption');
+      return res.status(500).json({ error: 'DEK not available for encryption' });
     }
 
     const { encryptedData: encryptedPassword, iv } = cryptoService.encryptPassword(password, req.user.dek);

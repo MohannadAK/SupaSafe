@@ -6,6 +6,7 @@
 const jwt = require('jsonwebtoken');
 const { User } = require('../models');
 const cryptoService = require('../services/cryptoService');
+const authService = require('../services/authService');
 require('dotenv').config();
 
 const JWT_SECRET = process.env.JWT_SECRET || 'dev_secret';
@@ -45,18 +46,29 @@ exports.authenticateJWT = async (req, res, next) => {
     // Extract user information
     req.user = {
       id: decoded.id,
-      email: decoded.email
+      email: decoded.email,
+      tokenVersion: decoded.tokenVersion 
     };
 
     // Decrypt the KEK if needed for password operations
     if (decoded.encryptedKEK && decoded.kekIV) {
       try {
         // Decrypt KEK for operations that require it
-        req.kek = cryptoService.decryptKEKFromJWT(decoded.encryptedKEK, decoded.kekIV);
+        const kek = cryptoService.decryptKEKFromJWT(decoded.encryptedKEK, decoded.kekIV);
+        
+        req.user.dek = await authService.getDEK(decoded.id, kek);
       } catch (decryptError) {
-        console.error('KEK decryption error:', decryptError);
-        // Continue even if KEK decryption fails - some routes may not need it
+        console.error('KEK/DEK decryption error:', decryptError);
+        return res.status(500).json({
+          error: 'Failed to decrypt encryption keys',
+          details: decryptError.message
+        });
       }
+    } else {
+      return res.status(401).json({
+        error: 'Invalid token',
+        message: 'Token missing required encryption key data'
+      });
     }
 
     next();
@@ -115,5 +127,5 @@ exports.rateLimiter = (maxRequests = 5, windowMs = 60000) => {
     // Increment count and allow request
     record.count += 1;
     return next();
-  };
+  }
 };
