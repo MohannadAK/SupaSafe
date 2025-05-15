@@ -56,7 +56,7 @@ exports.authenticateJWT = async (req, res, next) => {
         // Decrypt KEK for operations that require it
         const kek = cryptoService.decryptKEKFromJWT(decoded.encryptedKEK, decoded.kekIV);
         
-        req.user.dek = await authService.getDEK(decoded.id, kek);
+        req.user.kek = kek;
       } catch (decryptError) {
         console.error('KEK/DEK decryption error:', decryptError);
         return res.status(500).json({

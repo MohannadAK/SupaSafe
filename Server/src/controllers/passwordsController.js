@@ -42,6 +42,8 @@ exports.getSites = async (req, res) => {
 exports.addPassword = async (req, res) => {
   const { websiteUrl, username, password, siteName } = req.body;
   const userId = req.user.id;
+  const dek = await authService.getDEK(req.user.id, req.user.kek);
+
 
   if (!websiteUrl || !username || !password || !siteName) {
     return res.status(400).json({ error: 'websiteUrl, username, password, and siteName are required' });
@@ -54,11 +56,11 @@ exports.addPassword = async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    if (!req.user.dek) {
+    if (!dek) {
       return res.status(500).json({ error: 'DEK not available for encryption' });
     }
 
-    const { encryptedData: encryptedPassword, iv } = cryptoService.encryptPassword(password, req.user.dek);
+    const { encryptedData: encryptedPassword, iv } = cryptoService.encryptPassword(password, dek);
 
     const now = new Date().toISOString();
     const newPassword = await Password.create({
@@ -107,6 +109,8 @@ exports.addPassword = async (req, res) => {
 exports.getPasswordById = async (req, res) => {
   const { passwordId } = req.params;
   const userId = req.user.id;
+  const dek = await authService.getDEK(req.user.id, req.user.kek);
+    
 
   if (!passwordId) {
     return res.status(400).json({ error: 'Password ID is required' });
@@ -116,7 +120,7 @@ exports.getPasswordById = async (req, res) => {
     const user = await User.findByPk(userId);
     if (!user) throw new Error('User not found');
 
-    if (!req.user.dek) {
+    if (!dek) {
       throw new Error('DEK not available for decryption');
     }
 
@@ -127,7 +131,7 @@ exports.getPasswordById = async (req, res) => {
     if (!passwordData) throw new Error('Password not found');
     // (passwordData.userId !== userId) throw new Error('Unauthorized');
 
-    const decryptedPassword = cryptoService.decryptPassword(passwordData.encryptedPass, passwordData.iv, req.user.dek);
+    const decryptedPassword = cryptoService.decryptPassword(passwordData.encryptedPass, passwordData.iv, dek);
 
     return res.status(200).json({
       message: 'Password retrieved successfully',
@@ -211,6 +215,8 @@ exports.updatePassword = async (req, res) => {
   const { passwordId } = req.params;
   const { websiteUrl, username, password, siteName } = req.body;
   const userId = req.user.id;
+  const dek = await authService.getDEK(req.user.id, req.user.kek);
+
 
   if (!passwordId) {
     return res.status(400).json({ error: 'Password ID is required' });
@@ -236,10 +242,10 @@ exports.updatePassword = async (req, res) => {
     if (username) updateData.username = username;
     if (siteName) updateData.siteName = siteName;
     if (password) {
-      if (!req.user.dek) {
+      if (!dek) {
         throw new Error('DEK not available for encryption');
       }
-      const { encryptedData: encryptedPassword, iv } = cryptoService.encryptPassword(password, req.user.dek);
+      const { encryptedData: encryptedPassword, iv } = cryptoService.encryptPassword(password, dek);
       updateData.encryptedPass = encryptedPassword;
       updateData.iv = iv;
     }
