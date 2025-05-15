@@ -123,15 +123,15 @@ function AddPasswordModal({ onClose, onSave }) {
                 id="passwordLength"
                 type="range"
                 min="8"
-                max="32"
+                max="20"
                 value={passwordLength}
                 onChange={(e) => setPasswordLength(parseInt(e.target.value))}
                 className="w-full"
               />
               <div className="flex justify-between text-xs text-gray-500">
                 <span>8</span>
+                <span>14</span>
                 <span>20</span>
-                <span>32</span>
               </div>
             </div>
 

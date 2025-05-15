@@ -219,61 +219,50 @@ class CryptoService {
     }
 
     /**
-     * Generate a secure random password (FR4)
-     * @param {number} length - Length of the password (8-32 characters)
-     * @returns {string} - Randomly generated password
+     * Encrypt a password using the DEK
+     * @param {string} password - The plain text password to encrypt
+     * @param {Buffer} dek - Data Encryption Key
+     * @returns {{encryptedPassword: string, iv: string}} - Base64 encoded encrypted password and IV
      */
-    generatePassword(length = 16) {
-        // Ensure length is within valid range
-        const passwordLength = Math.min(Math.max(length, 8), 32);
-
-        // Define character sets
-        const uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        const lowercase = 'abcdefghijklmnopqrstuvwxyz';
-        const numbers = '0123456789';
-        const specials = '!@#$%^&*()';
-        const allChars = uppercase + lowercase + numbers + specials;
-
-        // Generate random password
-        let password = '';
-
-        // Ensure at least one character from each set
-        password += this.getRandomChar(uppercase);
-        password += this.getRandomChar(lowercase);
-        password += this.getRandomChar(numbers);
-        password += this.getRandomChar(specials);
-
-        // Fill the rest with random characters
-        for (let i = 4; i < passwordLength; i++) {
-            password += this.getRandomChar(allChars);
+    encryptPassword(password, dek) {
+        try {
+            return this.encryptWithDEK(password, dek);
+        } catch (error) {
+            console.error('Error encrypting password:', error);
+            throw new Error(`Failed to encrypt password: ${error.message}`);
         }
-
-        // Shuffle the password characters
-        return this.shuffleString(password);
     }
 
     /**
-     * Get a random character from a string
-     * @param {string} characters - String of characters to choose from
-     * @returns {string} - A random character
+     * Decrypt a password using the DEK
+     * @param {string} encryptedPassword - Base64 encoded encrypted password
+     * @param {string} iv - Base64 encoded IV
+     * @param {Buffer} dek - Data Encryption Key
+     * @returns {string} - Decrypted password as UTF-8 string
      */
-    getRandomChar(characters) {
-        const randomIndex = crypto.randomInt(0, characters.length);
-        return characters[randomIndex];
+    decryptPassword(encryptedPassword, iv, dek) {
+        try {
+            return this.decryptWithDEK(encryptedPassword, iv, dek);
+        } catch (error) {
+            console.error('Error decrypting password:', error);
+            throw new Error(`Failed to decrypt password: ${error.message}`);
+        }
     }
 
     /**
-     * Shuffle a string
-     * @param {string} str - String to shuffle
-     * @returns {string} - Shuffled string
+     * Decrypt the DEK from encrypted data using the KEK
+     * @param {string} encryptedDEK - Base64 encoded encrypted DEK
+     * @param {string} dekIV - Base64 encoded IV for DEK decryption
+     * @param {Buffer} kek - Decrypted Key Encryption Key
+     * @returns {Buffer} - Decrypted DEK
      */
-    shuffleString(str) {
-        const array = str.split('');
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = crypto.randomInt(0, i + 1);
-            [array[i], array[j]] = [array[j], array[i]];
+    getDEK(encryptedDEK, dekIV, kek) {
+        try {
+            return this.decryptDEK(encryptedDEK, dekIV, kek);
+        } catch (error) {
+            console.error('Error retrieving DEK:', error);
+            throw new Error(`Failed to retrieve DEK: ${error.message}`);
         }
-        return array.join('');
     }
 }
 

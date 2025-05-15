@@ -10,8 +10,11 @@ export const ENDPOINTS = {
   CHANGE_PASSWORD: '/auth/change-password',
   
   // Password endpoints
-  PASSWORDS: '/passwords',
-  PASSWORD: (id) => `/passwords/${id}`,
+  PASSWORDS: '/passwords/sites',
+  ADD_PASSWORD: '/passwords',
+  GET_PASSWORD: (id) => `/passwords/${id}`,
+  UPDATE_PASSWORD: (id) => `/passwords/${id}`,
+  DELETE_PASSWORD: (id) => `/passwords/${id}`,
   
   // User endpoints
   USER_PROFILE: '/user/profile',
@@ -99,14 +102,14 @@ export const api = {
   },
   
   updatePassword: async (id, passwordData) => {
-    return apiRequest(ENDPOINTS.PASSWORD(id), {
+    return apiRequest(ENDPOINTS.UPDATE_PASSWORD(id), {
       method: 'PUT',
       body: JSON.stringify(passwordData),
     });
   },
   
   deletePassword: async (id) => {
-    return apiRequest(ENDPOINTS.PASSWORD(id), {
+    return apiRequest(ENDPOINTS.DELETE_PASSWORD(id), {
       method: 'DELETE',
     });
   },

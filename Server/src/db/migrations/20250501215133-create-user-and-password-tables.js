@@ -47,8 +47,7 @@ module.exports = {
     await queryInterface.createTable('passwords', {
       id: {
         type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
-        allowNull: false,
+        defaultValue: Sequelize.literal('gen_random_uuid()'),
         primaryKey: true
       },
       userId: {
@@ -61,25 +60,33 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
       },
-      website: {
-        type: Sequelize.STRING(255),
+      iv: {
+        type: Sequelize.STRING(24),
         allowNull: false
       },
       username: {
-        type: Sequelize.STRING(255),
+        type: Sequelize.STRING(100),
         allowNull: false
       },
-      encryptedPassword: {
-        type: Sequelize.STRING(255),
+      encryptedPass: {
+        type: Sequelize.STRING(44),
+        allowNull: false
+      },
+      siteName: {
+        type: Sequelize.STRING(100),
         allowNull: false
       },
       lastUpdate: {
         type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW
+        defaultValue: Sequelize.literal('NOW()')
       },
       creationDate: {
         type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW
+        defaultValue: Sequelize.literal('NOW()')
+      },
+      websiteUrl: {
+        type: Sequelize.TEXT,
+        allowNull: true
       }
     });
   },
