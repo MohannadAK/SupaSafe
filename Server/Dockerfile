@@ -18,6 +18,18 @@ COPY <<EOF /app/wait-for-db.sh
 set -e
 
 echo "Waiting for PostgreSQL..."
+
+# Parse DATABASE_URL if it exists
+if [ -n "$DATABASE_URL" ]; then
+  # This is a basic attempt to parse, might need refinement based on URL format
+  DB_HOST=$(echo $DATABASE_URL | sed -e 's/.*@\(.*\):.*/\1/')
+  DB_PORT=$(echo $DATABASE_URL | sed -e 's/.*:\(.*\)\/.*$/\1/')
+  DB_USER=$(echo $DATABASE_URL | sed -e 's/.*\/\/\(.*\):.*/\1/')
+  DB_NAME=$(echo $DATABASE_URL | sed -e 's/.*\/.*\/\(.*\)?.*$/\1/')
+  # Note: pg_isready does not directly use the password
+  # To check password, a different command or method might be needed if required
+fi
+
 until pg_isready -h "\$DB_HOST" -p "\$DB_PORT" -U "\$DB_USER"; do
   echo "PostgreSQL is unavailable - sleeping"
   sleep 1
