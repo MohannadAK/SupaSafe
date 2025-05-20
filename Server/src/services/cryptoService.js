@@ -4,7 +4,7 @@
  */
 
 const crypto = require('crypto');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 require('dotenv').config();
 
 // Constants for cryptographic operations
