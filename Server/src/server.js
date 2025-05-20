@@ -1,23 +1,32 @@
+const express = require('express');
+const path = require('path');
 const app = require('./app');
 const { sequelize } = require('./models');
 const swaggerUi = require('swagger-ui-express');
 const swaggerSpec = require('./swagger');
 
-// Set port from environment variable or default to 3000
-const PORT = process.env.PORT || 3000;
+// Serve React frontend static files
+app.use(express.static(path.join(__dirname, '../client/build')));
 
-// Add Swagger UI endpoint
+// Serve Swagger API docs
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
+// Fallback for React (for SPA routing)
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
+});
+
 // Start the server
+const PORT = process.env.PORT;
+
 const startServer = async () => {
   try {
     // Test database connection
     await sequelize.authenticate();
     console.log('Database connection has been established successfully.');
 
-    // Sync database (creates tables if they don't exist)
-    await sequelize.sync({ force: false }); // Set force: true to drop and recreate (use cautiously)
+    // Sync database
+    await sequelize.sync({ force: false });
     console.log('Database synced');
 
     // Start listening

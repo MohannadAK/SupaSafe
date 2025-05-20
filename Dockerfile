@@ -11,8 +11,7 @@ RUN yarn build
 # Production stage
 FROM node:18-alpine
 WORKDIR /app
-RUN apk add --no-cache postgresql-client && \
-    npm install -g serve
+RUN apk add --no-cache postgresql-client
 COPY --from=frontend-build /app/client/build ./client/build
 WORKDIR /app/server
 COPY Server/package*.json ./
@@ -27,68 +26,8 @@ ENV DB_NAME=supasafe
 ENV DB_USER=postgres
 ENV DB_PASSWORD=postgres
 EXPOSE 3000
-EXPOSE 3001
 WORKDIR /app
-# RUN echo '#!/bin/sh' > /app/start.sh && \
-#     echo 'echo "Waiting for PostgreSQL..."' >> /app/start.sh && \
-#     echo 'until pg_isready -h $DB_HOST -p $DB_PORT -U $DB_USER; do' >> /app/start.sh && \
-#     echo '  echo "Waiting for PostgreSQL to be ready..."' >> /app/start.sh && \
-#     echo '  sleep 2' >> /app/start.sh && \
-#     echo 'done' >> /app/start.sh && \
-#     echo 'echo "PostgreSQL is ready!"' >> /app/start.sh && \
-#     echo 'mkdir -p /app/logs' >> /app/start.sh && \
-#     echo 'echo "Starting frontend..."' >> /app/start.sh && \
-#     echo 'cd /app/client' >> /app/start.sh && \
-#     echo 'serve -s build -l 3001 > /app/logs/frontend.log 2>&1 &' >> /app/start.sh && \
-#     echo 'FRONTEND_PID=$!' >> /app/start.sh && \
-#     echo 'echo "Frontend started with PID: $FRONTEND_PID"' >> /app/start.sh && \
-#     echo 'sleep 3' >> /app/start.sh && \
-#     echo 'echo "Starting backend..."' >> /app/start.sh && \
-#     echo 'cd /app/server' >> /app/start.sh && \
-#     echo 'node src/server.js' >> /app/start.sh && \
-#     chmod +x /app/start.sh
-#
-# CMD ["/bin/sh", "-c", "/app/start.sh"]
 
-# FROM node:18-alpine as frontend-build
-# WORKDIR /app/client
-# COPY Client/package*.json ./
-# COPY Client/yarn.lock ./
-# # Install dependencies using yarn for better dependency resolution
-# RUN yarn install
-# COPY Client/ .
-# # Set frontend port to 3001
-# ENV PORT=3001
-# RUN yarn build
-#
-# # Production stage
-# FROM node:18-alpine
-# WORKDIR /app
-# # Install serve globally and PostgreSQL client
-# RUN apk add --no-cache postgresql-client && \
-#     npm install -g serve
-# # Copy built frontend
-# COPY --from=frontend-build /app/client/build ./client/build
-# # Setup backend
-# WORKDIR /app/server
-# COPY Server/package*.json ./
-# RUN npm install
-# COPY Server/ .
-# # Set environment variables
-# ENV NODE_ENV=production
-# ENV PORT=3000
-# ENV CLIENT_PORT=3001
-# ENV DB_HOST=postgres
-# ENV DB_PORT=5432
-# ENV DB_NAME=supasafe
-# ENV DB_USER=postgres
-# ENV DB_PASSWORD=postgres
-# # Expose both ports
-# EXPOSE 3000
-# EXPOSE 3001
-# # Create and set up the startup script
-# WORKDIR /app
-#
 # Create the startup script as a separate file
 RUN echo '#!/bin/sh' > /app/start.sh && \
     echo '' >> /app/start.sh && \
@@ -132,7 +71,6 @@ RUN echo '#!/bin/sh' > /app/start.sh && \
     echo '# Start frontend with proper logging' >> /app/start.sh && \
     echo 'echo "Starting frontend..."' >> /app/start.sh && \
     echo 'cd /app/client' >> /app/start.sh && \
-    echo 'serve -s build -l 3001 > /app/logs/frontend.log 2>&1 &' >> /app/start.sh && \
     echo 'FRONTEND_PID=$!' >> /app/start.sh && \
     echo 'echo "Frontend started with PID: $FRONTEND_PID"' >> /app/start.sh && \
     echo '' >> /app/start.sh && \
@@ -211,17 +149,5 @@ RUN echo '#!/bin/sh' > /app/start.sh && \
     echo 'done' >> /app/start.sh && \
     chmod +x /app/start.sh
 
-# RUN echo '#!/bin/sh' > /app/start.sh && \
-#     echo 'echo "Waiting for PostgreSQL..."' >> /app/start.sh && \
-#     echo 'until pg_isready -h $DB_HOST -p $DB_PORT -U $DB_USER; do' >> /app/start.sh && \
-#     echo '  echo "Waiting for PostgreSQL to be ready..."' >> /app/start.sh && \
-#     echo '  sleep 2' >> /app/start.sh && \
-#     echo 'done' >> /app/start.sh && \
-#     echo 'echo "PostgreSQL is ready!"' >> /app/start.sh && \
-#     echo 'cd /app/server' >> /app/start.sh && \
-#     echo 'echo "Starting backend..."' >> /app/start.sh && \
-#     echo 'node src/server.js' >> /app/start.sh && \
-#     chmod +x /app/start.sh
-#
 # # Start both services
 CMD ["/bin/sh", "/app/start.sh"]
