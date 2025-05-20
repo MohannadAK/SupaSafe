@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 function EditPasswordModal({ password, onClose, onSave }) {
   const [name, setName] = useState(password.name);
@@ -7,6 +7,15 @@ function EditPasswordModal({ password, onClose, onSave }) {
   const [passwordValue, setPasswordValue] = useState(password.password || '••••••••••••••••');
   const [passwordLength, setPasswordLength] = useState(password.password?.length || 16);
   const [showPassword, setShowPassword] = useState(false);
+
+  // Sync state with password prop when it changes (especially password value)
+  useEffect(() => {
+    setName(password.name);
+    setUsername(password.username);
+    setWebsite(password.website);
+    setPasswordValue(password.password || '••••••••••••••••');
+    setPasswordLength(password.password?.length || 16);
+  }, [password]);
 
   const generatePassword = () => {
     const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+~`|}{[]:;?><,./-=';
@@ -35,8 +44,8 @@ function EditPasswordModal({ password, onClose, onSave }) {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
-        <div className="p-6">
+      <div className="bg-white rounded-lg shadow-xl sm:max-w-lg w-full max-h-[90vh] flex flex-col overflow-y-auto">
+        <div className="p-4 sm:p-6 flex-1 overflow-y-auto">
           <h2 className="text-2xl font-bold mb-1">Edit Password</h2>
           <p className="text-gray-600 mb-6">Update the details for this password entry</p>
 

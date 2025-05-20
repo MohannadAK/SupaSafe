@@ -53,6 +53,11 @@ export const apiRequest = async (endpoint, options = {}) => {
     
     // Handle non-2xx responses
     if (!response.ok) {
+      if (response.status === 401) {
+        // Optionally, redirect to login or show a message
+        // TODO: Implement redirect to login page if needed
+        alert('Session expired or unauthorized. Please log in again.');
+      }
       const errorData = await response.json().catch(() => ({}));
       throw new Error(errorData.message || `API request failed with status ${response.status}`);
     }

@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
 import AddPasswordModal from '../components/AddPasswordModal';
 import EditPasswordModal from '../components/EditPasswordModal';
 import Header from '../components/Header';
@@ -153,14 +152,6 @@ function Dashboard({ onLogout }) {
     }
   }, [passwords]);
 
-  // Create a ref for each password item
-  const createRef = (id) => {
-    if (!dropdownRefs.current[id]) {
-      dropdownRefs.current[id] = React.createRef();
-    }
-    return dropdownRefs.current[id];
-  };
-
   const filteredPasswords = passwords.filter(
     (password) =>
       password.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -244,8 +235,7 @@ function Dashboard({ onLogout }) {
 
   const handleEditPassword = async (updatedPassword) => {
     try {
-      // Call the API to update the password
-      const response = await apiRequest(ENDPOINTS.UPDATE_PASSWORD(updatedPassword.id), {
+      await apiRequest(ENDPOINTS.UPDATE_PASSWORD(updatedPassword.id), {
         method: 'PUT',
         body: JSON.stringify({
           siteName: updatedPassword.name,
@@ -613,7 +603,7 @@ function Dashboard({ onLogout }) {
     <div className="min-h-screen bg-gray-50">
       <Header onLogout={onLogout} title="Dashboard" />
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 min-h-screen overflow-y-auto">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 space-y-4 md:space-y-0">
           <h2 className="text-2xl font-bold">Your Passwords</h2>
           <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
@@ -689,8 +679,8 @@ function Dashboard({ onLogout }) {
             <p className="text-gray-500">No passwords found. Add your first password to get started.</p>
           </div>
         ) : (
-          <div className="bg-white shadow-md rounded-lg overflow-hidden">
-            <div className="overflow-x-auto">
+          <div className="bg-white shadow-md rounded-lg">
+            <div>
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
                   <tr>
@@ -848,7 +838,7 @@ function Dashboard({ onLogout }) {
                           </button>
                           {activeDropdown === password.id && (
                             <div 
-                              className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-10"
+                              className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-50"
                               onClick={(e) => e.stopPropagation()}
                             >
                               <div className="py-1">
