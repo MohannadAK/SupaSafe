@@ -35,6 +35,13 @@ export PGHOST
 export PGPORT
 export PGUSER
 
+# Debug: Print database connection details before pg_isready
+echo "Debugging DB connection details:"
+echo "PGHOST=$PGHOST"
+echo "PGPORT=$PGPORT"
+echo "PGUSER=$PGUSER"
+echo "-----------------------------------"
+
 RETRY_COUNT=0
 MAX_RETRIES=30
 
