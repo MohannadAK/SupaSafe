@@ -5,15 +5,23 @@ const { sequelize } = require('./models');
 const swaggerUi = require('swagger-ui-express');
 const swaggerSpec = require('./swagger');
 
-// Serve React frontend static files
-app.use(express.static(path.join(__dirname, '../client/build')));
+// Log the static file path for debugging
+const staticPath = '/app/client/build';
+console.log('Serving static files from:', staticPath);
+app.use(express.static(staticPath));
 
 // Serve Swagger API docs
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Fallback for React (for SPA routing)
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
+  console.log('Attempting to serve index.html for:', req.url);
+  res.sendFile('/app/client/build/index.html', (err) => {
+    if (err) {
+      console.error('Error serving index.html:', err);
+      res.status(500).send('Error serving index.html');
+    }
+  });
 });
 
 // Start the server
@@ -21,15 +29,10 @@ const PORT = process.env.PORT;
 
 const startServer = async () => {
   try {
-    // Test database connection
     await sequelize.authenticate();
     console.log('Database connection has been established successfully.');
-
-    // Sync database
     await sequelize.sync({ force: false });
     console.log('Database synced');
-
-    // Start listening
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
       console.log(`Swagger docs available at http://localhost:${PORT}/api-docs`);
@@ -40,17 +43,14 @@ const startServer = async () => {
   }
 };
 
-// Handle uncaught exceptions
 process.on('uncaughtException', (error) => {
   console.error('Uncaught Exception:', error);
   process.exit(1);
 });
 
-// Handle unhandled promise rejections
 process.on('unhandledRejection', (reason, promise) => {
   console.error('Unhandled Rejection at:', promise, 'reason:', reason);
   process.exit(1);
 });
 
-// Start server
 startServer();
