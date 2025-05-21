@@ -436,7 +436,7 @@ function Dashboard({ onLogout }) {
   };
 
   const toggleDropdown = (id, e) => {
-    // Stop event propagation to prevent immediate closing
+    e.preventDefault();
     e.stopPropagation();
     setActiveDropdown(activeDropdown === id ? null : id);
   };
@@ -818,7 +818,11 @@ function Dashboard({ onLogout }) {
                           ref={(el) => dropdownRefs.current[password.id] = el}
                         >
                           <button
-                            onClick={(e) => toggleDropdown(password.id, e)}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              toggleDropdown(password.id, e);
+                            }}
                             className="flex items-center justify-center w-8 h-8 text-gray-400 rounded-full hover:bg-gray-100 focus:outline-none"
                           >
                             <svg
@@ -838,8 +842,11 @@ function Dashboard({ onLogout }) {
                           </button>
                           {activeDropdown === password.id && (
                             <div 
-                              className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-50"
-                              onClick={(e) => e.stopPropagation()}
+                              className={`origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-50 ${activeDropdown === password.id ? 'block' : 'hidden'}`}
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                              }}
                             >
                               <div className="py-1">
                                 <button

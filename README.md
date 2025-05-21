@@ -115,7 +115,6 @@ SupaSafe is an enterprise-grade password management system that combines robust 
 - **Core Framework**
   - React 18.x
   - TypeScript 4.x
-  - Redux Toolkit for state management
   - React Router for navigation
   - React Query for data fetching
 
@@ -167,7 +166,7 @@ SupaSafe is an enterprise-grade password management system that combines robust 
 supasafe/
 ├── Client/                      # Frontend application
 │   ├── public/                  # Static files
-│   │   └── assets/             # Images, fonts, etc.
+│   │   └──...             # Images, fonts, etc.
 │   │
 │   ├── src/                    # Source code
 │   │   ├── components/         # React components
@@ -200,9 +199,11 @@ supasafe/
 │   ├── package.json         # Dependencies
 │   └── start.sh            # Startup script
 │
-├── Docs/                     # Documentation
-│   ├── Logo.jpg             # Project logo
-│   └── README.md            # Documentation files
+├── Docs/                        
+│   ├── Database Design-Schema   # Documentation         
+│   ├── SRS                      # Project logo
+│   ├── System Design Diagrams   # Project logo
+│   └── UI Mockups-Design        # Documentation files
 │
 ├── .dockerignore            # Docker ignore rules
 ├── .gitignore              # Root git ignore rules
@@ -260,56 +261,9 @@ supasafe/
 - Docker (optional)
 - Git
 
-### Installation
 
-1. **Clone the Repository**
-```bash
-git clone https://github.com/MohannadAK/supasafe.git
-cd supasafe
-```
 
-2. **Environment Setup**
-```bash
-# Frontend
-cd client
-cp .env.example .env
-npm install
 
-# Backend
-cd ../server
-cp .env.example .env
-npm install
-```
-
-3. **Database Setup**
-```bash
-# Create database
-createdb supasafe_db
-
-# Run migrations
-cd server
-npx sequelize-cli db:migrate
-
-# Seed data (optional)
-npx sequelize-cli db:seed:all
-```
-
-4. **Development Start**
-```bash
-# Start backend
-cd server
-npm run dev
-
-# Start frontend (new terminal)
-cd client
-npm run dev
-```
-
-5. **Docker Setup (Alternative)**
-```bash
-# Build and start containers
-docker-compose up --build
-```
 
 ## 📚 API Documentation
 
@@ -318,9 +272,6 @@ docker-compose up --build
 - `POST /api/auth/login` - User login
 - `POST /api/auth/logout` - User logout
 - `PUT /api/auth/change-password` - Password change
-- `POST /api/auth/refresh-token` - Token refresh
-- `POST /api/auth/forgot-password` - Password recovery
-- `POST /api/auth/reset-password` - Password reset
 
 ### Password Management
 - `GET /api/passwords` - List passwords
@@ -328,15 +279,10 @@ docker-compose up --build
 - `GET /api/passwords/:id` - Get password
 - `PUT /api/passwords/:id` - Update password
 - `DELETE /api/passwords/:id` - Delete password
-- `GET /api/passwords/health` - Password health check
-- `POST /api/passwords/import` - Import passwords
-- `GET /api/passwords/export` - Export passwords
 
 ### User Management
 - `GET /api/users/profile` - Get profile
 - `PUT /api/users/profile` - Update profile
-- `GET /api/users/sessions` - List sessions
-- `DELETE /api/users/sessions/:id` - End session
 
 ## 👥 Team
 
