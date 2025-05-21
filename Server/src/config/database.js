@@ -43,13 +43,17 @@ module.exports = {
     },
   },
   production: {
-    use_env_variable: 'DATABASE_URL',
+    username: process.env.PGUSER,
+    password: process.env.PGPASSWORD,
+    database: process.env.PGDATABASE,
+    host: process.env.PGHOST,
+    port: process.env.PGPORT,
     dialect: 'postgres',
     logging: false,
     dialectOptions: {
       ssl: {
-        require: true,
-        rejectUnauthorized: false
+        require: true, // Enforce SSL
+        rejectUnauthorized: false // This might be needed depending on Railway's SSL cert setup
       }
     },
     pool: {
