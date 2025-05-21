@@ -9,19 +9,14 @@ echo "-----------------------------------"
 
 # Set PostgreSQL environment variables based on DATABASE_URL or individual variables
 if [ -n "$DATABASE_URL" ]; then
-  # Parse DATABASE_URL
-  DB_USER=$(echo "$DATABASE_URL" | cut -d/ -f3 | cut -d@ -f1 | cut -d: -f1)
-  DB_PASSWORD=$(echo "$DATABASE_URL" | cut -d/ -f3 | cut -d@ -f1 | cut -d: -f2)
-  DB_HOST=$(echo "$DATABASE_URL" | cut -d@ -f2 | cut -d: -f1)
-  DB_PORT=$(echo "$DATABASE_URL" | cut -d@ -f2 | cut -d: -f2 | cut -d/ -f1)
-  DB_NAME=$(echo "$DATABASE_URL" | cut -d/ -f4 | cut -d? -f1)
+  # Hardcode Railway production details as DATABASE_URL is not available in script
+  export PGHOST="postgres.railway.internal"
+  export PGPORT="5432"
+  export PGUSER="postgres"
+  export PGDATABASE="railway"
+  # Rely on PGPASSWORD environment variable provided by Railway
+  export PGPASSWORD="$PGPASSWORD"
 
-  export PGHOST="$DB_HOST"
-  export PGPORT="$DB_PORT"
-  export PGUSER="$DB_USER"
-  export PGPASSWORD="$DB_PASSWORD"
-  # Note: PGDATABASE is not needed for pg_isready, but is useful for the application
-  export PGDATABASE="$DB_NAME"
 else
   # Use individual variables if DATABASE_URL is not set (for local development)
   export PGHOST="$DB_HOST"
