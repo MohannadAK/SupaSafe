@@ -50,6 +50,15 @@ module.exports = {
     port: process.env.PGPORT,
     dialect: 'postgres',
     logging: false,
+    hooks: {
+      beforeConnect: (config) => {
+        console.log('DEBUG: Connecting with user:', config.username);
+        console.log('DEBUG: Connecting with password:', config.password);
+        console.log('DEBUG: Connecting to host:', config.host);
+        console.log('DEBUG: Connecting to port:', config.port);
+        console.log('DEBUG: Connecting to database:', config.database);
+      }
+    },
     dialectOptions: {
       ssl: {
         require: true, // Enforce SSL
