@@ -61,30 +61,13 @@ if ! kill -0 $BACKEND_PID 2>/dev/null; then
   exit 1
 fi
 
-# Start frontend with proper logging
-echo "Starting frontend..."
-cd /app/client
-serve -s build -l 3001 > /app/logs/frontend.log 2>&1 &
-FRONTEND_PID=$!
-echo "Frontend started with PID: $FRONTEND_PID"
-
-# Give frontend a moment to initialize
-sleep 3
-
-# Check if frontend is still running
-if ! kill -0 $FRONTEND_PID 2>/dev/null; then
-  echo "ERROR: Frontend failed to start properly. Logs:"
-  cat /app/logs/frontend.log
-  exit 1
-fi
-
 echo "All services started successfully!"
 
 # Function to handle graceful shutdown
 graceful_shutdown() {
   echo "Shutting down services..."
-  kill -TERM $BACKEND_PID $FRONTEND_PID 2>/dev/null || true
-  wait $BACKEND_PID $FRONTEND_PID 2>/dev/null || true
+  kill -TERM $BACKEND_PID 2>/dev/null || true
+  wait $BACKEND_PID 2>/dev/null || true
   echo "Shutdown complete"
   exit 0
 }
@@ -92,11 +75,11 @@ graceful_shutdown() {
 # Trap signals
 trap graceful_shutdown SIGTERM SIGINT
 
-echo "Monitoring services (logs at /app/logs/)"
+echo "Monitoring service (logs at /app/logs/)"
 echo "Press Ctrl+C to stop"
 
-# Monitor both processes and display logs
-tail -f /app/logs/backend.log /app/logs/frontend.log &
+# Monitor backend process and display logs
+tail -f /app/logs/backend.log &
 TAIL_PID=$!
 
 # Keep the container running and monitor processes
@@ -118,25 +101,6 @@ while true; do
       exit 1
     fi
     echo "Backend restarted successfully"
-  fi
-  
-  if ! kill -0 $FRONTEND_PID 2>/dev/null; then
-    echo "ERROR: Frontend process died unexpectedly"
-    echo "Last frontend logs:"
-    tail -n 50 /app/logs/frontend.log
-    # Try to restart the frontend
-    echo "Attempting to restart frontend..."
-    cd /app/client
-    serve -s build -l 3001 > /app/logs/frontend.log 2>&1 &
-    FRONTEND_PID=$!
-    sleep 3
-    if ! kill -0 $FRONTEND_PID 2>/dev/null; then
-      echo "Frontend restart failed. Logs:"
-      cat /app/logs/frontend.log
-      echo "Exiting..."
-      exit 1
-    fi
-    echo "Frontend restarted successfully"
   fi
   
   sleep 5

@@ -18,13 +18,9 @@ COPY Server/package*.json ./
 RUN npm install
 COPY Server/ ./
 ENV NODE_ENV=production
-ENV PORT=3000
-ENV CLIENT_PORT=3001
+ENV PORT=8080
 
-# Install serve globally to serve the frontend build
-RUN npm install -g serve
-
-EXPOSE 3000
+EXPOSE 8080
 
 # Copy the startup script and make it executable
 COPY Server/start.sh /app/start.sh

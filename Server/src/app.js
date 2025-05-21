@@ -5,6 +5,7 @@ const morgan = require('morgan');
 const routes = require('./routes');
 const swaggerUi = require('swagger-ui-express');
 const swaggerSpec = require('./swagger');
+const path = require('path');
 
 // Create Express app
 const app = express();
@@ -42,8 +43,16 @@ app.use(morgan('dev')); // HTTP request logger
 // Apply routes
 app.use('/api', routes);
 
+// Serve static files from the React build folder
+app.use(express.static(path.join(__dirname, '..' , '..' , 'client' , 'build')));
+
 // Swagger UI
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+// Fallback to index.html for React client-side routing
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', '..', 'client' , 'build', 'index.html'));
+});
 
 // Error handling middleware
 app.use((err, req, res, next) => {
