@@ -1,9 +1,9 @@
 // Environment variables configuration
 const env = {
   // API configuration
-  API_BASE_URL: process.env.NODE_ENV === 'production' && process.env.RAILWAY_PUBLIC_DOMAIN
-    ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}/api`
-    : process.env.REACT_APP_API_BASE_URL || 'http://localhost:3000/api',
+  API_BASE_URL: process.env.NODE_ENV === 'production' 
+    ? '/api' // Use relative path in production
+    : process.env.REACT_APP_API_BASE_URL || 'http://localhost:3000/api', // Use env var or localhost in development/other
   
   // Authentication settings
   TOKEN_EXPIRY_DAYS: parseInt(process.env.REACT_APP_TOKEN_EXPIRY_DAYS || '7', 10),
