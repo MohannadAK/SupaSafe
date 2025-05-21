@@ -1,5 +1,5 @@
 // Base API URL - change this to your actual backend URL
-export const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:3000/api';
+export const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || '/api';
 
 // API endpoints
 export const ENDPOINTS = {
