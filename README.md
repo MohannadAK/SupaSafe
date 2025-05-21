@@ -36,7 +36,6 @@
 - [Security Architecture](#-security-architecture)
 - [Getting Started](#-getting-started)
 - [API Documentation](#-api-documentation)
-- [Deployment](#-deployment)
 - [Team](#-team)
 - [License](#-license)
 - [System Architecture](#-system-architecture)
