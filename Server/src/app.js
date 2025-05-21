@@ -1,5 +1,5 @@
 const express = require('express');
-const cors = require('cors');
+//const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const routes = require('./routes');
@@ -10,24 +10,24 @@ const swaggerSpec = require('./swagger');
 const app = express();
 
 // Configure CORS with specific options
-const corsOptions = {
-  // Allow requests from the frontend service
-  origin: [
-    `http://localhost:${process.env.CLIENT_PORT || 3001}`,
-    // Allow from container name if using Docker network
-    `http://app:${process.env.CLIENT_PORT || 3001}`,
-    // During development, you might also need these
-    `http://127.0.0.1:${process.env.CLIENT_PORT || 3001}`,
-    // If frontend and backend are on the same origin in production
-    `${process.env.FRONTEND_URL || ''}`,
-        'http://supasafe.com',
-        'https://supasafe.up.railway.app'
-  ].filter(Boolean), // Filter out empty values
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true, // Allow cookies if you're using them
-  maxAge: 86400, // Cache preflight request results for 24 hours (in seconds)
-};
+//const corsOptions = {
+//   // Allow requests from the frontend service
+//   origin: [
+//     `http://localhost:${process.env.CLIENT_PORT || 3001}`,
+//     // Allow from container name if using Docker network
+//     `http://app:${process.env.CLIENT_PORT || 3001}`,
+//     // During development, you might also need these
+//     `http://127.0.0.1:${process.env.CLIENT_PORT || 3001}`,
+//     // If frontend and backend are on the same origin in production
+//     `${process.env.FRONTEND_URL || ''}`,
+//         'http://supasafe.com',
+//         'https://supasafe.up.railway.app'
+//   ].filter(Boolean), // Filter out empty values
+//   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+//   allowedHeaders: ['Content-Type', 'Authorization'],
+//   credentials: true, // Allow cookies if you're using them
+//   maxAge: 86400, // Cache preflight request results for 24 hours (in seconds)
+// };
 
 // Apply middleware
 app.use(helmet({
@@ -35,7 +35,7 @@ app.use(helmet({
   contentSecurityPolicy: false,
   crossOriginEmbedderPolicy: false,
 })); // Security headers
-app.use(cors(corsOptions)); // Enable CORS with specific options
+//app.use(cors(corsOptions)); // Enable CORS with specific options
 app.use(express.json()); // Parse JSON request bodies
 app.use(morgan('dev')); // HTTP request logger
 
