@@ -20,7 +20,8 @@ const corsOptions = {
     `http://127.0.0.1:${process.env.CLIENT_PORT || 3001}`,
     // If frontend and backend are on the same origin in production
     `${process.env.FRONTEND_URL || ''}`,
-        'http://supasafe.com'
+        'http://supasafe.com',
+        'https://supasafe.up.railway.app'
   ].filter(Boolean), // Filter out empty values
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
   allowedHeaders: ['Content-Type', 'Authorization'],
