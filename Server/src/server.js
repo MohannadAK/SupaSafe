@@ -9,13 +9,7 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const swaggerJSDoc = require('swagger-jsdoc');
 
-// TEMPORARY DEBUG: Print PGPASSWORD environment variable (REMOVE THIS AFTER DEBUGGING)
-console.log('DEBUG (Server Init): PGPASSWORD environment variable:', process.env.PGPASSWORD);
-console.log('DEBUG (Server Init): PGDATABASE environment variable:', process.env.PGDATABASE);
-console.log('DEBUG (Server Init): PGUSER environment variable:', process.env.PGUSER);
-console.log('DEBUG (Server Init): PGHOST environment variable:', process.env.PGHOST);
-console.log('DEBUG (Server Init): PGPORT environment variable:', process.env.PGPORT);
-console.log('------------------------------------------------------');
+// Main server file
 
 // Load environment variables from .env file in development
 if (process.env.NODE_ENV !== 'production') {
