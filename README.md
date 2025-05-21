@@ -82,7 +82,7 @@ SupaSafe is an enterprise-grade password manager designed to provide robust secu
 ## 🛠 Technical Stack
 
 ### Frontend
-- React 18.x with TypeScript
+- React 18.x
 - Tailwind CSS and Headless UI
 - React Query for data fetching
 - React Hook Form for form management
