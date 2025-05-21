@@ -16,6 +16,9 @@ if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
 }
 
+// CORS middleware configuration
+app.use(cors()); // Allow all origins
+
 // Log the static file path for debugging
 const staticPath = '/app/client/build';
 
