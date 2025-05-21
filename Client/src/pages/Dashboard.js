@@ -436,8 +436,10 @@ function Dashboard({ onLogout }) {
   };
 
   const toggleDropdown = (id, e) => {
-    e.preventDefault();
-    e.stopPropagation();
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
     setActiveDropdown(activeDropdown === id ? null : id);
   };
 
@@ -818,11 +820,8 @@ function Dashboard({ onLogout }) {
                           ref={(el) => dropdownRefs.current[password.id] = el}
                         >
                           <button
-                            onClick={(e) => {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              toggleDropdown(password.id, e);
-                            }}
+                            type="button"
+                            onClick={(e) => toggleDropdown(password.id, e)}
                             className="flex items-center justify-center w-8 h-8 text-gray-400 rounded-full hover:bg-gray-100 focus:outline-none"
                           >
                             <svg
@@ -842,16 +841,22 @@ function Dashboard({ onLogout }) {
                           </button>
                           {activeDropdown === password.id && (
                             <div 
-                              className={`origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-50 ${activeDropdown === password.id ? 'block' : 'hidden'}`}
-                              onClick={(e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                              }}
+                              className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-50"
+                              role="menu"
+                              aria-orientation="vertical"
+                              aria-labelledby="options-menu"
                             >
-                              <div className="py-1">
+                              <div className="py-1" role="none">
                                 <button
-                                  onClick={() => handleEditButtonClick(password)}
+                                  type="button"
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    handleEditButtonClick(password);
+                                    setActiveDropdown(null);
+                                  }}
                                   className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                  role="menuitem"
                                 >
                                   <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -870,8 +875,15 @@ function Dashboard({ onLogout }) {
                                   Edit
                                 </button>
                                 <button
-                                  onClick={() => handleCopyPassword(password)}
+                                  type="button"
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    handleCopyPassword(password);
+                                    setActiveDropdown(null);
+                                  }}
                                   className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                  role="menuitem"
                                 >
                                   <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -890,8 +902,15 @@ function Dashboard({ onLogout }) {
                                   Copy Password
                                 </button>
                                 <button
-                                  onClick={() => handleDeletePassword(password.id)}
+                                  type="button"
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    handleDeletePassword(password.id);
+                                    setActiveDropdown(null);
+                                  }}
                                   className="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+                                  role="menuitem"
                                 >
                                   <svg
                                     xmlns="http://www.w3.org/2000/svg"
