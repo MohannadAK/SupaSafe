@@ -3,48 +3,47 @@ set -e
 
 echo "Waiting for PostgreSQL..."
 
+# Debug: Print raw DATABASE_URL
+echo "Raw DATABASE_URL: $DATABASE_URL"
+echo "-----------------------------------"
+
 # Set PostgreSQL environment variables based on DATABASE_URL or individual variables
 if [ -n "$DATABASE_URL" ]; then
-  # Parse DATABASE_URL using awk
-  # Expected format: postgres://user:password@host:port/dbname
-  # Split by ://, @, :, and /
-  PG_DETAILS=$(echo "$DATABASE_URL" | awk -F'://|@|:' '{print $3, $5, $4}' | awk -F'/' '{print $1, $2}')
-  
-  # Use echo and read instead of bash-specific here string
-  echo "$PG_DETAILS" | {
-    read PGUSER PGHOST PGPORT PGDATABASE
-    # Export variables from the subshell
-    export PGUSER
-    export PGHOST
-    export PGPORT
-    export PGDATABASE
-  }
-  # Note: PGPASSWORD is not needed for pg_isready, but could be exported if needed elsewhere
-  # export PGPASSWORD="$(echo "$DATABASE_URL" | awk -F'://|@|:' '{print $4}')"
+  # Parse DATABASE_URL
+  DB_USER=$(echo "$DATABASE_URL" | cut -d/ -f3 | cut -d@ -f1 | cut -d: -f1)
+  DB_PASSWORD=$(echo "$DATABASE_URL" | cut -d/ -f3 | cut -d@ -f1 | cut -d: -f2)
+  DB_HOST=$(echo "$DATABASE_URL" | cut -d@ -f2 | cut -d: -f1)
+  DB_PORT=$(echo "$DATABASE_URL" | cut -d@ -f2 | cut -d: -f2 | cut -d/ -f1)
+  DB_NAME=$(echo "$DATABASE_URL" | cut -d/ -f4 | cut -d? -f1)
+
+  export PGHOST="$DB_HOST"
+  export PGPORT="$DB_PORT"
+  export PGUSER="$DB_USER"
+  export PGPASSWORD="$DB_PASSWORD"
+  # Note: PGDATABASE is not needed for pg_isready, but is useful for the application
+  export PGDATABASE="$DB_NAME"
 else
   # Use individual variables if DATABASE_URL is not set (for local development)
   export PGHOST="$DB_HOST"
   export PGPORT="$DB_PORT"
   export PGUSER="$DB_USER"
-  # Note: PGPASSWORD is not needed for pg_isready
-  # export PGPASSWORD="$DB_PASSWORD"
+  export PGPASSWORD="$DB_PASSWORD"
+  export PGDATABASE="$DB_NAME"
 fi
-
-# Export variables so pg_isready can use them
-export PGHOST
-export PGPORT
-export PGUSER
 
 # Debug: Print database connection details before pg_isready
 echo "Debugging DB connection details:"
 echo "PGHOST=$PGHOST"
 echo "PGPORT=$PGPORT"
 echo "PGUSER=$PGUSER"
+echo "PGPASSWORD is set: ${PGPASSWORD+set}" # Check if PGPASSWORD is set without printing value
+echo "PGDATABASE=$PGDATABASE"
 echo "-----------------------------------"
 
 RETRY_COUNT=0
 MAX_RETRIES=30
 
+# pg_isready uses PGHOST, PGPORT, PGUSER, and PGPASSWORD environment variables
 until pg_isready || [ $RETRY_COUNT -eq $MAX_RETRIES ]; do
   echo "Waiting for PostgreSQL to be ready... (Attempt $RETRY_COUNT/$MAX_RETRIES)"
   RETRY_COUNT=$((RETRY_COUNT+1))
