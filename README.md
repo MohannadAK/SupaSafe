@@ -36,10 +36,7 @@
 - [Security Architecture](#-security-architecture)
 - [Getting Started](#-getting-started)
 - [API Documentation](#-api-documentation)
-- [Development Workflow](#-development-workflow)
-- [Testing](#-testing)
 - [Deployment](#-deployment)
-- [Contributing](#-contributing)
 - [Team](#-team)
 - [License](#-license)
 - [System Architecture](#-system-architecture)
@@ -347,8 +344,8 @@ docker-compose up --build
 
 <div align="center">
 
-| Name | GitHub Profile |
-|-----|---------------|
+| GitHub Profile |
+|----------------------------------------------|
 | [@MohannadAK](https://github.com/MohannadAK) |
 | [@Ahmed0Tawfik](https://github.com/Ahmed0Tawfik) |
 | [@MeN1na](https://github.com/MeN1na) |
