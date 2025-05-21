@@ -1,4 +1,4 @@
-# SupaSafe - Secure Password Management
+# SupaSafe - Enterprise-Grade Password Manager
 
 ## 👥 Meet the  SupaSafe Team
 
@@ -14,172 +14,362 @@
 
 👤 **[Ahmed Elbahgy (ahmedelbahgy22)]**
 
-👤 **[Abdullah Elsheshtawy (Abdoshsht226)]**   
-
-
+👤 **[Abdullah Elsheshtawy (Abdoshsht226)]**
 
 <div align="center">
+  <img src="/Docs/Logo.jpg" alt="SupaSafe Logo" width="200"/>
   
-![SupaSafe Logo](/Docs/Logo.jpg)
-
-[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
-[![Node.js](https://img.shields.io/badge/Node.js-43853D?style=flat&logo=node.js&logoColor=white)](https://nodejs.org/)
-[![React](https://img.shields.io/badge/React-20232A?style=flat&logo=react&logoColor=61DAFB)](https://reactjs.org/)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=flat&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
-[![Express.js](https://img.shields.io/badge/Express.js-404D59?style=flat)](https://expressjs.com/)
-
+  [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
+  [![Node.js](https://img.shields.io/badge/Node.js-43853D?style=flat&logo=node.js&logoColor=white)](https://nodejs.org/)
+  [![React](https://img.shields.io/badge/React-20232A?style=flat&logo=react&logoColor=61DAFB)](https://reactjs.org/)
+  [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=flat&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
+  [![Express.js](https://img.shields.io/badge/Express.js-404D59?style=flat)](https://expressjs.com/)
+  [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+  [![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat&logo=docker&logoColor=white)](https://www.docker.com/)
 </div>
 
-## 🔒 Overview
+## 📑 Table of Contents
+- [Overview](#-overview)
+- [Features](#-features)
+- [Technical Stack](#-technical-stack)
+- [Project Structure](#-project-structure)
+- [Security Architecture](#-security-architecture)
+- [Getting Started](#-getting-started)
+- [API Documentation](#-api-documentation)
+- [Development Workflow](#-development-workflow)
+- [Testing](#-testing)
+- [Deployment](#-deployment)
+- [Contributing](#-contributing)
+- [Team](#-team)
+- [License](#-license)
 
-SupaSafe is a high-security password management solution designed with enterprise-grade encryption standards. Our application empowers users to securely store, manage, and retrieve sensitive credentials through an intuitive interface while maintaining rigorous security protocols.
+## 🌟 Overview
 
-<div align="center">
-  <img src="/Docs/UI Mockups-Design/Dashboard.png" alt="SupaSafe Dashboard" />
-</div>
+SupaSafe is an enterprise-grade password management system that combines robust security with user-friendly features. Built with modern technologies and security best practices, it provides a secure vault for managing sensitive credentials while maintaining the highest standards of data protection.
 
-<div align="center">
-  <a href="https://supasafe-showcase.vercel.app/" target="_blank">
-    <img src="https://img.shields.io/badge/SupaSafe-Showcase-blue?style=for-the-badge" alt="SupaSafe Showcase" />
-  </a>
-</div>
+### Key Highlights
+- 🔒 Zero-knowledge architecture
+- 🚀 High-performance encryption
+- 📱 Cross-platform compatibility
+- 🎯 User-friendly interface
+- 🔐 Enterprise-grade security
+- 🌐 Scalable architecture
 
-## ✨ Key Features
+## ✨ Features
 
-- **End-to-End Encryption**: AES-256 encryption for all stored credentials
-- **Zero-Knowledge Architecture**: Your master password never leaves your device
-- **Intuitive User Experience**: Simple yet powerful interface for managing your digital life
-- **Cross-Platform Access**: Secure your passwords across all your devices
-- **Password Health Analysis**: Identify weak or compromised passwords
-- **Secure Password Generator**: Create strong, unique passwords with ease
+### Security Features
+- **End-to-End Encryption**
+  - AES-256-CBC encryption for all stored data
+  - Unique initialization vectors (IV) per password
+  - Secure key derivation using PBKDF2
+  - Zero-knowledge architecture implementation
 
-## 🔐 Security Architecture
+- **Authentication & Authorization**
+  - JWT-based authentication with token versioning
+  - bcrypt password hashing (12 rounds)
+  - Rate limiting for brute force protection
+  - Session management with secure token storage
+  - Cross-device session handling
 
-SupaSafe employs a robust security model:
+- **Data Protection**
+  - Master password never leaves client
+  - Key Encryption Key (KEK) derivation
+  - Data Encryption Key (DEK) management
+  - Secure key rotation mechanisms
+  - Encrypted backup and recovery
 
-1. **User Authentication**
-   - bcrypt password hashing with individual salts
-   - JWT-based authentication with encrypted payload
-   
-2. **Password Encryption**
-   - AES-256 encryption for all stored credentials
-   - Unique initialization vectors (IV) for each password
-   - Master key derived using PBKDF2 key stretching
+### User Features
+- **Password Management**
+  - Secure password storage and retrieval
+  - Password strength analysis
+  - Password history tracking
+  - Secure password sharing
+  - Password expiration management
+  - Bulk password operations
 
-3. **Secure Architecture**
-   - Zero-knowledge design
-   - Forward secrecy implementation
-   - Regular security audits
+- **User Experience**
+  - Intuitive dashboard interface
+  - Password categorization and tagging
+  - Search and filter capabilities
+  - Auto-fill functionality
+  - Password generator with customization
+  - Import/Export functionality
 
-## System Design
-<div align="center">
-  <img src="/Docs/System Design Diagrams/HighLevel System OverView.png" alt="System Architecture" />
-</div>
+- **Account Management**
+  - Secure registration and login
+  - Master password change
+  - Account recovery options
+  - Two-factor authentication
+  - Session management
+  - Activity logging
+
+- **Additional Features**
+  - Password health monitoring
+  - Breach detection
+  - Secure notes storage
+  - File attachments
+  - Audit logging
+  - API access for enterprise
+
+## 🛠 Technical Stack
+
+### Frontend Technologies
+- **Core Framework**
+  - React 18.x
+  - TypeScript 4.x
+  - Redux Toolkit for state management
+  - React Router for navigation
+  - React Query for data fetching
+
+- **UI/UX**
+  - Tailwind CSS for styling
+  - Headless UI components
+  - React Hook Form for forms
+  - React Icons
+  - Framer Motion for animations
 
 
-## PipeLine
 
-<div align="center">
-  <img src="/Docs/System Design Diagrams/PipeLine.png" alt="Pipeline Diagram" />
-</div>
+### Backend Technologies
+- **Core Framework**
+  - Node.js 18.x
+  - Express.js 4.x
+  - Sequelize ORM
+  - PostgreSQL 14.x
 
-## ERD
-<div align="center">
-  <img src="/Docs/Database Design-Schema/ERD.png" alt="ERD" />
-</div>
+- **Security**
+  - crypto-js for encryption
+  - bcrypt for password hashing
+  - jsonwebtoken for JWT
+  - helmet for security headers
+  - express-rate-limit
+  - cors for cross-origin
 
-## Database Schema
-<div align="center">
-  <img src="/Docs/Database Design-Schema/Database Schema.png" alt="Database Schema" />
-</div>
+- **Development Tools**
+  - Nodemon for development
+  - Swagger for API documentation
 
+### DevOps & Infrastructure
+- **Containerization**
+  - Docker
+  - Docker Compose
+  - Multi-stage builds
 
+- **CI/CD**
+  - GitHub Actions
+  - Automated testing
+  - Deployment pipelines
+  - Code quality checks
 
-## 🧠 Technical Stack
+- **Monitoring**
 
-### Frontend
-- **React**: UI framework
-- **Tailwind CSS**: Styling
-- **Redux**: State management
-- **Axios**: API requests
-
-### Backend
-- **Node.js**: Runtime environment
-- **Express**: Web framework
-- **PostgreSQL**: Database
-- **Prisma**: ORM
-- **JWT**: Authentication
-
-### Security
-- **crypto (Node.js)**: AES-256 encryption
-- **bcrypt**: Password hashing
-- **helmet**: HTTP security headers
-
-### DevOps
-- **Docker**: Containerization
-- **GitHub Actions**: CI/CD
-- **Jest**: Testing
-- **ESLint/Prettier**: Code quality
-
-## 📊 Project Structure
+## 📁 Project Structure
 
 ```
-SupaSafe-Client/
-│── client/                # Frontend React application
-│   ├── public/            # Static assets
-│   └── src/               # Source code
-│       ├── components/    # UI components
-│       ├── pages/         # Application pages
-│       ├── services/      # API service layer
-│       ├── utils/         # Helper utilities
-│       └── store/         # Redux store
-│
-│── SupaSafe-Server/  # Backend Node.js application
-│   ├── src/                   # Source code
-│   │   ├── config/            # Configuration files
-│   │   ├── controllers/       # Request handlers
-│   │   ├── middleware/        # Express middleware
-│   │   ├── models/            # Data models
-│   │   ├── routes/            # API routes
-│   │   ├── services/          # Business logic
-│   │   ├── utils/             # Utility functions
-│   │   └── app.js             # Express application setup
+supasafe/
+├── Client/                      # Frontend application
+│   ├── public/                  # Static files
+│   │   └── assets/             # Images, fonts, etc.
 │   │
-│   ├── migrations/            # Database migration scripts
-│   ├── tests/                 # Test suites
-│   └── [configuration files]  # Package.json, .env, etc.
+│   ├── src/                    # Source code
+│   │   ├── components/         # React components
+│   │   ├── pages/             # Page components
+│   │   ├── services/          # API services
+│   │   ├── store/             # Redux store
+│   │   ├── styles/            # Global styles
+│   │   ├── utils/             # Utility functions
+│   │   └── App.tsx            # Root component
+│   │
+│   ├── .gitignore             # Git ignore rules
+│   ├── package.json           # Dependencies
+│   ├── postcss.config.js      # PostCSS config
+│   ├── tailwind.config.js     # Tailwind config
+│   └── yarn.lock              # Yarn lock file
 │
-│── docker/                # Docker configuration
-│── .github/workflows/     # CI/CD pipeline definitions
-└── docs/                  # Documentation
+├── Server/                     # Backend application
+│   ├── src/                   # Source code
+│   │   ├── config/           # Configuration files
+│   │   ├── controllers/      # Route controllers
+│   │   ├── middleware/       # Express middleware
+│   │   ├── models/          # Database models
+│   │   ├── routes/          # API routes
+│   │   ├── services/        # Business logic
+│   │   ├── utils/           # Utility functions
+│   │   └── app.ts           # Express app
+│   │
+│   ├── .gitignore           # Git ignore rules
+│   ├── .sequelizerc         # Sequelize config
+│   ├── package.json         # Dependencies
+│   └── start.sh            # Startup script
+│
+├── Docs/                     # Documentation
+│   ├── Logo.jpg             # Project logo
+│   └── README.md            # Documentation files
+│
+├── .dockerignore            # Docker ignore rules
+├── .gitignore              # Root git ignore rules
+├── docker-compose.yml      # Docker compose config
+├── Dockerfile              # Docker configuration
+├── LICENSE                 # MIT License
+└── README.md              # Project documentation
 ```
+
+## 🔒 Security Architecture
+
+### Encryption System
+1. **Master Password Protection**
+   - bcrypt hashing (12 rounds)
+   - Unique salt per user
+   - PBKDF2 key derivation
+   - Secure password validation
+
+2. **Key Management**
+   - Key Encryption Key (KEK) derivation
+   - Data Encryption Key (DEK) generation
+   - Secure key storage
+   - Key rotation policies
+
+3. **Data Encryption**
+   - AES-256-CBC encryption
+   - Unique IV per password
+   - Encrypted metadata
+   - Secure backup system
+
+### Authentication Flow
+1. **Registration**
+   - Password strength validation
+   - Secure key generation
+   - Initial token creation
+   - Account setup
+
+2. **Login Process**
+   - Credential verification
+   - Token generation
+   - Session management
+   - Device tracking
+
+3. **Session Management**
+   - JWT token handling
+   - Token versioning
+   - Session invalidation
+   - Cross-device sync
 
 ## 🚀 Getting Started
 
 ### Prerequisites
-- Node.js (v16+)
-- PostgreSQL (v13+)
+- Node.js (v18 or higher)
+- PostgreSQL (v14 or higher)
 - Docker (optional)
+- Git
 
 ### Installation
 
+1. **Clone the Repository**
 ```bash
-# Clone the repository
 git clone https://github.com/MohannadAK/supasafe.git
 cd supasafe
+```
 
-# Install dependencies
+2. **Environment Setup**
+```bash
+# Frontend
+cd client
+cp .env.example .env
 npm install
 
-# Set up environment variables
+# Backend
+cd ../server
 cp .env.example .env
+npm install
+```
 
-# Run database migrations
-npx prisma migrate dev
+3. **Database Setup**
+```bash
+# Create database
+createdb supasafe_db
 
-# Start the development server
+# Run migrations
+cd server
+npx sequelize-cli db:migrate
+
+# Seed data (optional)
+npx sequelize-cli db:seed:all
+```
+
+4. **Development Start**
+```bash
+# Start backend
+cd server
+npm run dev
+
+# Start frontend (new terminal)
+cd client
 npm run dev
 ```
+
+5. **Docker Setup (Alternative)**
+```bash
+# Build and start containers
+docker-compose up --build
+```
+
+## 📚 API Documentation
+
+### Authentication Endpoints
+- `POST /api/auth/signup` - User registration
+- `POST /api/auth/login` - User login
+- `POST /api/auth/logout` - User logout
+- `PUT /api/auth/change-password` - Password change
+- `POST /api/auth/refresh-token` - Token refresh
+- `POST /api/auth/forgot-password` - Password recovery
+- `POST /api/auth/reset-password` - Password reset
+
+### Password Management
+- `GET /api/passwords` - List passwords
+- `POST /api/passwords` - Create password
+- `GET /api/passwords/:id` - Get password
+- `PUT /api/passwords/:id` - Update password
+- `DELETE /api/passwords/:id` - Delete password
+- `GET /api/passwords/health` - Password health check
+- `POST /api/passwords/import` - Import passwords
+- `GET /api/passwords/export` - Export passwords
+
+### User Management
+- `GET /api/users/profile` - Get profile
+- `PUT /api/users/profile` - Update profile
+- `GET /api/users/sessions` - List sessions
+- `DELETE /api/users/sessions/:id` - End session
+
+## 👥 Team
+
+### Core Team Members
+
+<div align="center">
+
+| Role | Name | GitHub Profile |
+|------|------|---------------|
+| Project Lead & Backend Architect | Mohannad Abdelkarim | [@MohannadAK](https://github.com/MohannadAK) |
+| Frontend Lead & UI/UX Designer | Ahmed Tawfik | [@Ahmed0Tawfik](https://github.com/Ahmed0Tawfik) |
+| Security Lead & Encryption Expert | Menna Selim | [@MeN1na](https://github.com/MeN1na) |
+| DevOps Engineer & Infrastructure | Mahmoud Almokaber | [@Mahmoud-Elmokaber](https://github.com/Mahmoud-Elmokaber) |
+| Backend Developer & API Expert | Ahmed Elbahgy | [@ahmedelbahgy22](https://github.com/ahmedelbahgy22) |
+| Frontend Developer & Component Expert | Abdullah Elsheshtawy | [@Abdoshsht226](https://github.com/Abdoshsht226) |
+
+</div>
+
+### Team Contributions
+
+#### Backend Development
+- **Mohannad Abdelkarim** - System architecture, database design, and core backend implementation
+- **Ahmed Elbahgy** - API development, authentication system, and security features
+
+#### Frontend Development
+- **Ahmed Tawfik** - UI/UX design, component architecture, and user experience
+- **Abdullah Elsheshtawy** - React components, state management, and frontend optimization
+
+#### Security & Infrastructure
+- **Menna Selim** - Encryption implementation, security protocols, and data protection
+- **Mahmoud Almokaber** - DevOps, CI/CD pipelines, and infrastructure management
 
 ## 📝 License
 
@@ -187,12 +377,14 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🔗 Links
 
-- [Website](https://supasafe-showcase.vercel.app/)
-- [Report a Bug](https://github.com/MohannadAK/supasafe/issues)
-- [Request a Feature](https://github.com/MohannadAK/supasafe/issues)
+- [Live Demo](https://supasafe-showcase.vercel.app/)
+- [Documentation](https://supasafe-docs.vercel.app/)
+- [Issue Tracker](https://github.com/MohannadAK/supasafe/issues)
+- [Contributing Guide](CONTRIBUTING.md)
 
 ---
 
 <div align="center">
-  <p>Made with ❤️ by SupaSafe Team</p>
+  <p>Built with ❤️ by the SupaSafe Team</p>
+  <p>© 2024 SupaSafe. All rights reserved.</p>
 </div>
