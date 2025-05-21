@@ -46,22 +46,22 @@ module.exports = {
     // Use DATABASE_URL if set, otherwise construct from individual variables
     use_env_variable: process.env.DATABASE_URL ? 'DATABASE_URL' : undefined,
     username: process.env.PGUSER,
-    password: process.env.PGPASSWORD,
+    password: 'dlUSMwrpzbyjtIupcwuBEjrtAVoMJeWj', // TEMPORARY: Hardcoded password for Railway debugging. REMOVE THIS AFTER FIXING ENV VARS.
     database: process.env.PGDATABASE,
     host: process.env.PGHOST,
     port: process.env.PGPORT,
     dialect: 'postgres',
     logging: false,
     // TEMPORARY DEBUG: Print password (REMOVE THIS AFTER DEBUGGING)
-    hooks: {
-      beforeConnect: (config) => {
-        console.log('DEBUG: Connecting with user:', config.username);
-        console.log('DEBUG: Connecting with password:', config.password ? '[PASSWORD_SET]' : '[PASSWORD_NOT_SET]'); // Reverted to not printing password value directly
-        console.log('DEBUG: Connecting to host:', config.host);
-        console.log('DEBUG: Connecting to port:', config.port);
-        console.log('DEBUG: Connecting to database:', config.database);
-      }
-    },
+    // hooks: {
+    //   beforeConnect: (config) => {
+    //     console.log('DEBUG: Connecting with user:', config.username);
+    //     console.log('DEBUG: Connecting with password:', config.password ? '[PASSWORD_SET]' : '[PASSWORD_NOT_SET]'); // Reverted to not printing password value directly
+    //     console.log('DEBUG: Connecting to host:', config.host);
+    //     console.log('DEBUG: Connecting to port:', config.port);
+    //     console.log('DEBUG: Connecting to database:', config.database);
+    //   }
+    // },
     dialectOptions: {
       ssl: {
         require: true, // Enforce SSL
