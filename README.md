@@ -42,6 +42,7 @@
 - [Contributing](#-contributing)
 - [Team](#-team)
 - [License](#-license)
+- [System Architecture](#-system-architecture)
 
 ## 🌟 Overview
 
@@ -346,30 +347,17 @@ docker-compose up --build
 
 <div align="center">
 
-| Role | Name | GitHub Profile |
-|------|------|---------------|
-| Project Lead & Backend Architect | Mohannad Abdelkarim | [@MohannadAK](https://github.com/MohannadAK) |
-| Frontend Lead & UI/UX Designer | Ahmed Tawfik | [@Ahmed0Tawfik](https://github.com/Ahmed0Tawfik) |
-| Security Lead & Encryption Expert | Menna Selim | [@MeN1na](https://github.com/MeN1na) |
-| DevOps Engineer & Infrastructure | Mahmoud Almokaber | [@Mahmoud-Elmokaber](https://github.com/Mahmoud-Elmokaber) |
-| Backend Developer & API Expert | Ahmed Elbahgy | [@ahmedelbahgy22](https://github.com/ahmedelbahgy22) |
-| Frontend Developer & Component Expert | Abdullah Elsheshtawy | [@Abdoshsht226](https://github.com/Abdoshsht226) |
+| Name | GitHub Profile |
+|-----|---------------|
+| [@MohannadAK](https://github.com/MohannadAK) |
+| [@Ahmed0Tawfik](https://github.com/Ahmed0Tawfik) |
+| [@MeN1na](https://github.com/MeN1na) |
+| [@Mahmoud-Elmokaber](https://github.com/Mahmoud-Elmokaber) |
+| [@ahmedelbahgy22](https://github.com/ahmedelbahgy22) |
+| [@Abdoshsht226](https://github.com/Abdoshsht226) |
 
 </div>
 
-### Team Contributions
-
-#### Backend Development
-- **Mohannad Abdelkarim** - System architecture, database design, and core backend implementation
-- **Ahmed Elbahgy** - API development, authentication system, and security features
-
-#### Frontend Development
-- **Ahmed Tawfik** - UI/UX design, component architecture, and user experience
-- **Abdullah Elsheshtawy** - React components, state management, and frontend optimization
-
-#### Security & Infrastructure
-- **Menna Selim** - Encryption implementation, security protocols, and data protection
-- **Mahmoud Almokaber** - DevOps, CI/CD pipelines, and infrastructure management
 
 ## 📝 License
 
@@ -387,4 +375,63 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 <div align="center">
   <p>Built with ❤️ by the SupaSafe Team</p>
   <p>© 2024 SupaSafe. All rights reserved.</p>
+</div>
+
+## 🏗 System Architecture
+
+### Database Design
+<div align="center">
+  <h3>Entity Relationship Diagram (ERD)</h3>
+  <img src="/Docs/Database Design-Schema/ERD.png" alt="Entity Relationship Diagram" width="800"/>
+  
+  <h3>Database Schema</h3>
+  <img src="/Docs/Database Design-Schema/Database Schema.png" alt="Database Schema" width="800"/>
+</div>
+
+### System Design
+<div align="center">
+  <h3>High-Level System Overview</h3>
+  <img src="/Docs/System Design Diagrams/HighLevel System OverView.png" alt="High-Level System Overview" width="800"/>
+  
+  <h3>Development Pipeline</h3>
+  <img src="/Docs/System Design Diagrams/PipeLine.png" alt="Development Pipeline" width="800"/>
+</div>
+
+### Key Workflows
+<div align="center">
+  <h3>Authentication Flows</h3>
+  <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+    <div>
+      <h4>User Registration</h4>
+      <img src="/Docs/System Design Diagrams/Register User Flow.png" alt="Registration Flow" width="400"/>
+    </div>
+    <div>
+      <h4>User Login</h4>
+      <img src="/Docs/System Design Diagrams/Login User Flow.png" alt="Login Flow" width="400"/>
+    </div>
+    <div>
+      <h4>User Logout</h4>
+      <img src="/Docs/System Design Diagrams/Logout User Flow.png" alt="Logout Flow" width="400"/>
+    </div>
+  </div>
+
+  <h3>Password Management Flows</h3>
+  <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+    <div>
+      <h4>Add Password</h4>
+      <img src="/Docs/System Design Diagrams/Add Password Flow.png" alt="Add Password Flow" width="400"/>
+    </div>
+    <div>
+      <h4>Retrieve Password</h4>
+      <img src="/Docs/System Design Diagrams/Retrieve Password Flow.png" alt="Retrieve Password Flow" width="400"/>
+    </div>
+    <div>
+      <h4>Update Password</h4>
+      <img src="/Docs/System Design Diagrams/Update Password Flow.png" alt="Update Password Flow" width="400"/>
+    </div>
+    <div>
+      <h4>Delete Password</h4>
+      <img src="/Docs/System Design Diagrams/Delete Password Flow.png" alt="Delete Password Flow" width="400"/>
+    </div>
+  </div>
 </div>

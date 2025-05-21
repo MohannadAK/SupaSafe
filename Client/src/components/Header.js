@@ -163,16 +163,6 @@ function Header({ onLogout, title }) {
                     </svg>
                     Account Settings
                   </Link>
-                  <Link 
-                    to="/account" 
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
-                    onClick={() => setIsAccountDropdownOpen(false)}
-                  >
-                    <svg className="h-4 w-4 mr-2 text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M18 8a6 6 0 01-7.743 5.743L10 14l-1 1-1 1H6v-1l1-1 1-1-.257-.257A6 6 0 1118 8zm-6-4a1 1 0 10-2 0v1a1 1 0 102 0V4z" clipRule="evenodd" />
-                    </svg>
-                    Change Master Password
-                  </Link>
                   <div className="border-t border-gray-100 my-1"></div>
                   <button 
                     onClick={() => {
@@ -267,16 +257,6 @@ function Header({ onLogout, title }) {
                         <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
                       </svg>
                       Account Settings
-                    </Link>
-                    <Link
-                      to="/account"
-                      className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white flex items-center"
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      <svg className="h-4 w-4 mr-2 text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                        <path fillRule="evenodd" d="M18 8a6 6 0 01-7.743 5.743L10 14l-1 1-1 1H6v-1l1-1 1-1-.257-.257A6 6 0 1118 8zm-6-4a1 1 0 10-2 0v1a1 1 0 102 0V4z" clipRule="evenodd" />
-                      </svg>
-                      Change Master Password
                     </Link>
                   </div>
                 )}
