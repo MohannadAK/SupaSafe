@@ -56,7 +56,7 @@ mkdir -p /app/logs
 # Start backend with proper logging
 echo "Starting backend..."
 cd /app/server
-node src/server.js > /app/logs/backend.log 2>&1 &
+PGPASSWORD="$PGPASSWORD" node src/server.js > /app/logs/backend.log 2>&1 &
 BACKEND_PID=$!
 echo "Backend started with PID: $BACKEND_PID"
 
@@ -117,7 +117,7 @@ while true; do
     # Try to restart the backend
     echo "Attempting to restart backend..."
     cd /app/server
-    node src/server.js > /app/logs/backend.log 2>&1 &
+    PGPASSWORD="$PGPASSWORD" node src/server.js > /app/logs/backend.log 2>&1 &
     BACKEND_PID=$!
     sleep 5
     if ! kill -0 $BACKEND_PID 2>/dev/null; then
