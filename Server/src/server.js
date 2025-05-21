@@ -4,7 +4,6 @@ const app = require('./app');
 const { sequelize } = require('./models');
 const swaggerUi = require('swagger-ui-express');
 const swaggerSpec = require('./swagger');
-const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const swaggerJSDoc = require('swagger-jsdoc');
@@ -15,9 +14,6 @@ const swaggerJSDoc = require('swagger-jsdoc');
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
 }
-
-// CORS middleware configuration
-app.use(cors()); // Allow all origins
 
 // Log the static file path for debugging
 const staticPath = '/app/client/build';

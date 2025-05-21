@@ -1,5 +1,5 @@
 const express = require('express');
-//const cors = require('cors');
+const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const routes = require('./routes');
@@ -35,7 +35,7 @@ app.use(helmet({
   contentSecurityPolicy: false,
   crossOriginEmbedderPolicy: false,
 })); // Security headers
-//app.use(cors(corsOptions)); // Enable CORS with specific options
+app.use(cors()); // Enable CORS with specific options
 app.use(express.json()); // Parse JSON request bodies
 app.use(morgan('dev')); // HTTP request logger
 
