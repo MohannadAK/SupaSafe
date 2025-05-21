@@ -1,24 +1,24 @@
 # SupaSafe - Enterprise-Grade Password Manager
 
-## 👥 Meet the  SupaSafe Team
 
+## 👥 Meet the SupaSafe Team
 
-
-👤 **[Mohannad Abdelkarim (MohannadAK)]**   
+👤 **[Mohannad Abdelkarim (MohannadAK)]**
 
 👤 **[Ahmed Tawfik (Ahmed0Tawfik)]**
 
-👤 **[Menna Selim (MeN1na)]**   
+👤 **[Menna Selim (MeN1na)]**
 
-👤 **[Mahmoud Almokaber (Mahmoud-Elmokaber)]** 
+👤 **[Mahmoud Almokaber (Mahmoud-Elmokaber)]**
 
 👤 **[Ahmed Elbahgy (ahmedelbahgy22)]**
 
 👤 **[Abdullah Elsheshtawy (Abdoshsht226)]**
 
+
 <div align="center">
   <img src="/Docs/Logo.jpg" alt="SupaSafe Logo" width="200"/>
-  
+
   [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
   [![Node.js](https://img.shields.io/badge/Node.js-43853D?style=flat&logo=node.js&logoColor=white)](https://nodejs.org/)
   [![React](https://img.shields.io/badge/React-20232A?style=flat&logo=react&logoColor=61DAFB)](https://reactjs.org/)
@@ -35,345 +35,179 @@
 - [Project Structure](#-project-structure)
 - [Security Architecture](#-security-architecture)
 - [Getting Started](#-getting-started)
-- [API Documentation](#-api-documentation)
-- [Team](#-team)
-- [License](#-license)
-- [System Architecture](#-system-architecture)
 
 ## 🌟 Overview
 
-SupaSafe is an enterprise-grade password management system that combines robust security with user-friendly features. Built with modern technologies and security best practices, it provides a secure vault for managing sensitive credentials while maintaining the highest standards of data protection.
+SupaSafe is an enterprise-grade password manager designed to provide robust security while delivering a seamless user experience. Built with modern technologies and industry-standard cryptographic practices, SupaSafe protects sensitive credentials with client-side encryption and secure key management.
 
 ### Key Highlights
-- 🔒 Zero-knowledge architecture
-- 🚀 High-performance encryption
+- 🔒 Client-side encryption with secure key handling
+- 🚀 AES-256 encryption for stored data
 - 📱 Cross-platform compatibility
-- 🎯 User-friendly interface
-- 🔐 Enterprise-grade security
-- 🌐 Scalable architecture
+- 🎯 Intuitive, user-friendly interface
+- 🔐 Enterprise-grade security controls
+- 🌐 Scalable and extensible architecture
 
 ## ✨ Features
 
 ### Security Features
-- **End-to-End Encryption**
-  - AES-256-CBC encryption for all stored data
-  - Unique initialization vectors (IV) per password
-  - Secure key derivation using PBKDF2
-  - Zero-knowledge architecture implementation
+- **Client-Side Encryption**
+  - AES-256-CBC encryption applied on the client before data transmission
+  - Unique Initialization Vector (IV) per password entry
+  - PBKDF2 key derivation on client from master password
+
+- **Master Password Handling**
+  - Master password is securely transmitted during login only
+  - Server stores **no plaintext master password or encryption keys**
+  - Server stores only bcrypt hash for authentication verification
+  - Encryption keys derived and managed exclusively on client side
 
 - **Authentication & Authorization**
-  - JWT-based authentication with token versioning
-  - bcrypt password hashing (12 rounds)
-  - Rate limiting for brute force protection
-  - Session management with secure token storage
-  - Cross-device session handling
+  - JWT-based authentication with token versioning and expiration
+  - bcrypt password hashing with strong salting and 12 rounds
+  - Rate limiting and brute-force protection on authentication endpoints
+  - Cross-device session management
 
-- **Data Protection**
-  - Master password never leaves client
-  - Key Encryption Key (KEK) derivation
-  - Data Encryption Key (DEK) management
-  - Secure key rotation mechanisms
-  - Encrypted backup and recovery
+- **Data Protection & Recovery**
+  - Encrypted backups and secure key rotation mechanisms
+  - Secure account recovery options without exposing sensitive data
 
-### User Features
-- **Password Management**
-  - Secure password storage and retrieval
-  - Password strength analysis
-  - Password history tracking
-  - Secure password sharing
-  - Password expiration management
-  - Bulk password operations
-
-- **User Experience**
-  - Intuitive dashboard interface
-  - Password categorization and tagging
-  - Search and filter capabilities
-  - Auto-fill functionality
-  - Password generator with customization
-  - Import/Export functionality
-
-- **Account Management**
-  - Secure registration and login
-  - Master password change
-  - Account recovery options
-  - Two-factor authentication
-  - Session management
-  - Activity logging
-
-- **Additional Features**
-  - Password health monitoring
-  - Breach detection
-  - Secure notes storage
-  - File attachments
-  - Audit logging
-  - API access for enterprise
+### User Experience Features
+- Password vault with secure storage and retrieval
+- Password strength analysis and expiration management
+- Secure password sharing and bulk operations
+- Auto-fill and password generator with customizable options
+- Two-factor authentication and activity logging
 
 ## 🛠 Technical Stack
 
-### Frontend Technologies
-- **Core Framework**
-  - React 18.x
-  - TypeScript 4.x
-  - React Router for navigation
-  - React Query for data fetching
+### Frontend
+- React 18.x with TypeScript
+- Tailwind CSS and Headless UI
+- React Query for data fetching
+- React Hook Form for form management
 
-- **UI/UX**
-  - Tailwind CSS for styling
-  - Headless UI components
-  - React Hook Form for forms
-  - React Icons
-  - Framer Motion for animations
-
-
-
-### Backend Technologies
-- **Core Framework**
-  - Node.js 18.x
-  - Express.js 4.x
-  - Sequelize ORM
-  - PostgreSQL 14.x
-
-- **Security**
-  - crypto-js for encryption
-  - bcrypt for password hashing
-  - jsonwebtoken for JWT
-  - helmet for security headers
-  - express-rate-limit
-  - cors for cross-origin
-
-- **Development Tools**
-  - Nodemon for development
-  - Swagger for API documentation
+### Backend
+- Node.js 18.x with Express.js
+- Sequelize ORM with PostgreSQL 14.x
+- bcrypt, jsonwebtoken, helmet, express-rate-limit for security
+- crypto-js for encryption utilities
 
 ### DevOps & Infrastructure
-- **Containerization**
-  - Docker
-  - Docker Compose
-  - Multi-stage builds
-
-- **CI/CD**
-  - GitHub Actions
-  - Automated testing
-  - Deployment pipelines
-  - Code quality checks
-
-- **Monitoring**
+- Docker and Docker Compose for containerization
+- GitHub Actions for CI/CD pipelines
 
 ## 📁 Project Structure
-
-```
 supasafe/
-├── Client/                      # Frontend application
-│   ├── public/                  # Static files
-│   │   └──...             # Images, fonts, etc.
-│   │
-│   ├── src/                    # Source code
-│   │   ├── components/         # React components
-│   │   ├── pages/             # Page components
-│   │   ├── services/          # API services
-│   │   ├── store/             # Redux store
-│   │   ├── styles/            # Global styles
-│   │   ├── utils/             # Utility functions
-│   │   └── App.tsx            # Root component
-│   │
-│   ├── .gitignore             # Git ignore rules
-│   ├── package.json           # Dependencies
-│   ├── postcss.config.js      # PostCSS config
-│   ├── tailwind.config.js     # Tailwind config
-│   └── yarn.lock              # Yarn lock file
-│
-├── Server/                     # Backend application
-│   ├── src/                   # Source code
-│   │   ├── config/           # Configuration files
-│   │   ├── controllers/      # Route controllers
-│   │   ├── middleware/       # Express middleware
-│   │   ├── models/          # Database models
-│   │   ├── routes/          # API routes
-│   │   ├── services/        # Business logic
-│   │   ├── utils/           # Utility functions
-│   │   └── app.ts           # Express app
-│   │
-│   ├── .gitignore           # Git ignore rules
-│   ├── .sequelizerc         # Sequelize config
-│   ├── package.json         # Dependencies
-│   └── start.sh            # Startup script
-│
-├── Docs/                        
-│   ├── Database Design-Schema   # Documentation         
-│   ├── SRS                      # Project logo
-│   ├── System Design Diagrams   # Project logo
-│   └── UI Mockups-Design        # Documentation files
-│
-├── .dockerignore            # Docker ignore rules
-├── .gitignore              # Root git ignore rules
-├── docker-compose.yml      # Docker compose config
-├── Dockerfile              # Docker configuration
-├── LICENSE                 # MIT License
-└── README.md              # Project documentation
-```
+├── Client/ # Frontend application
+│ ├── public/
+│ ├── src/
+│ ├── package.json
+│ └── ...
+├── Server/ # Backend application
+│ ├── src/
+│ ├── package.json
+│ └── ...
+├── Docs/
+├── docker-compose.yml
+├── Dockerfile
+├── LICENSE
+└── README.md
 
 ## 🔒 Security Architecture
 
-### Encryption System
-1. **Master Password Protection**
-   - bcrypt hashing (12 rounds)
-   - Unique salt per user
-   - PBKDF2 key derivation
-   - Secure password validation
+### Master Password & Encryption Model
+- Master password is transmitted securely over HTTPS during login and registration.
+- The server **never stores** the plaintext master password or any derived encryption keys.
+- Server stores a bcrypt hash of the master password to authenticate users.
+- Encryption keys (Data Encryption Key, DEK) are derived on the client side using PBKDF2 from the master password.
+- All sensitive user data (passwords, notes, etc.) is encrypted with AES-256-CBC **before** being sent to the server.
 
-2. **Key Management**
-   - Key Encryption Key (KEK) derivation
-   - Data Encryption Key (DEK) generation
-   - Secure key storage
-   - Key rotation policies
+### Authentication & Session Management
+- Users authenticate with credentials verified via bcrypt hashes stored on the server.
+- Upon successful authentication, JWT tokens are issued with expiration and version control for secure session management.
+- Rate limiting and brute-force protection guard against unauthorized access attempts.
+- Cross-device session synchronization and invalidation supported.
 
-3. **Data Encryption**
-   - AES-256-CBC encryption
-   - Unique IV per password
-   - Encrypted metadata
-   - Secure backup system
-
-### Authentication Flow
-1. **Registration**
-   - Password strength validation
-   - Secure key generation
-   - Initial token creation
-   - Account setup
-
-2. **Login Process**
-   - Credential verification
-   - Token generation
-   - Session management
-   - Device tracking
-
-3. **Session Management**
-   - JWT token handling
-   - Token versioning
-   - Session invalidation
-   - Cross-device sync
+### Data Security
+- Unique IVs ensure encryption security for each password entry.
+- Encrypted backups and key rotation mechanisms are supported without exposing plaintext data.
 
 ## 🚀 Getting Started
 
+Follow these instructions to get a copy of the project up and running locally.
+
 ### Prerequisites
 - Node.js (v18 or higher)
-- PostgreSQL (v14 or higher)
-- Docker (optional)
-- Git
+- npm or yarn
+- Docker and Docker Compose (optional but recommended)
+- PostgreSQL 14.x (if not using Docker)
 
+### Installation
 
+1. **Clone the repository**
 
+```bash
+git clone https://github.com/YourOrg/SupaSafe.git
+cd SupaSafe
+```
 
+2. **Setup environment variables**
 
-## 📚 API Documentation
+Create .env files in both /Client and /Server directories based on .env.example templates.
 
-### Authentication Endpoints
-- `POST /api/auth/signup` - User registration
-- `POST /api/auth/login` - User login
-- `POST /api/auth/logout` - User logout
-- `PUT /api/auth/change-password` - Password change
+Example .env for Server:
+```
+PORT=4000
+DATABASE_URL=postgresql://user:password@localhost:5432/supasafe_db
+JWT_SECRET=your_jwt_secret
+```
 
-### Password Management
-- `GET /api/passwords` - List passwords
-- `POST /api/passwords` - Create password
-- `GET /api/passwords/:id` - Get password
-- `PUT /api/passwords/:id` - Update password
-- `DELETE /api/passwords/:id` - Delete password
+3. **Install dependencies**
 
-### User Management
-- `GET /api/users/profile` - Get profile
-- `PUT /api/users/profile` - Update profile
+For Server:
+```bash
+cd Server
+npm install
+```
 
-## 👥 Team
+For Client:
 
-### Core Team Members
+```bash
+cd Client
+npm install
+```
 
-<div align="center">
+4. **Run the database migrations**
 
-| GitHub Profile |
-|----------------------------------------------|
-| [@MohannadAK](https://github.com/MohannadAK) |
-| [@Ahmed0Tawfik](https://github.com/Ahmed0Tawfik) |
-| [@MeN1na](https://github.com/MeN1na) |
-| [@Mahmoud-Elmokaber](https://github.com/Mahmoud-Elmokaber) |
-| [@ahmedelbahgy22](https://github.com/ahmedelbahgy22) |
-| [@Abdoshsht226](https://github.com/Abdoshsht226) |
+Make sure your PostgreSQL database is running and configured correctly.
+```bash
+cd ../Server
+npm run migrate
+```
 
-</div>
+5. Start the development servers
 
+In separate terminals:
+```bash
+# Backend
+cd Server
+npm run dev
 
-## 📝 License
+# Frontend
+cd ../Client
+npm start
+```
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+6. Access the app
 
-## 🔗 Links
+Open http://localhost:3000 in your browser.
 
-- [Live Demo](https://supasafe-showcase.vercel.app/)
-- [Documentation](https://supasafe-docs.vercel.app/)
-- [Issue Tracker](https://github.com/MohannadAK/supasafe/issues)
-- [Contributing Guide](CONTRIBUTING.md)
+### Using Docker
 
----
+Alternatively, use Docker Compose for easy setup:
+```bash
+docker-compose up --build
+```
 
-<div align="center">
-  <p>Built with ❤️ by the SupaSafe Team</p>
-  <p>© 2024 SupaSafe. All rights reserved.</p>
-</div>
-
-## 🏗 System Architecture
-
-### Database Design
-<div align="center">
-  <h3>Entity Relationship Diagram (ERD)</h3>
-  <img src="/Docs/Database Design-Schema/ERD.png" alt="Entity Relationship Diagram" width="800"/>
-  
-  <h3>Database Schema</h3>
-  <img src="/Docs/Database Design-Schema/Database Schema.png" alt="Database Schema" width="800"/>
-</div>
-
-### System Design
-<div align="center">
-  <h3>High-Level System Overview</h3>
-  <img src="/Docs/System Design Diagrams/HighLevel System OverView.png" alt="High-Level System Overview" width="800"/>
-  
-  <h3>Development Pipeline</h3>
-  <img src="/Docs/System Design Diagrams/PipeLine.png" alt="Development Pipeline" width="800"/>
-</div>
-
-### Key Workflows
-<div align="center">
-  <h3>Authentication Flows</h3>
-  <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
-    <div>
-      <h4>User Registration</h4>
-      <img src="/Docs/System Design Diagrams/Register User Flow.png" alt="Registration Flow" width="400"/>
-    </div>
-    <div>
-      <h4>User Login</h4>
-      <img src="/Docs/System Design Diagrams/Login User Flow.png" alt="Login Flow" width="400"/>
-    </div>
-    <div>
-      <h4>User Logout</h4>
-      <img src="/Docs/System Design Diagrams/Logout User Flow.png" alt="Logout Flow" width="400"/>
-    </div>
-  </div>
-
-  <h3>Password Management Flows</h3>
-  <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
-    <div>
-      <h4>Add Password</h4>
-      <img src="/Docs/System Design Diagrams/Add Password Flow.png" alt="Add Password Flow" width="400"/>
-    </div>
-    <div>
-      <h4>Retrieve Password</h4>
-      <img src="/Docs/System Design Diagrams/Retrieve Password Flow.png" alt="Retrieve Password Flow" width="400"/>
-    </div>
-    <div>
-      <h4>Update Password</h4>
-      <img src="/Docs/System Design Diagrams/Update Password Flow.png" alt="Update Password Flow" width="400"/>
-    </div>
-    <div>
-      <h4>Delete Password</h4>
-      <img src="/Docs/System Design Diagrams/Delete Password Flow.png" alt="Delete Password Flow" width="400"/>
-    </div>
-  </div>
-</div>
+This will start PostgreSQL, Backend, and Frontend containers.
