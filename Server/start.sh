@@ -24,15 +24,6 @@ else
   export PGDATABASE="$DB_NAME"
 fi
 
-# Debug: Print database connection details before pg_isready
-echo "Debugging DB connection details:"
-echo "PGHOST=$PGHOST"
-echo "PGPORT=$PGPORT"
-echo "PGUSER=$PGUSER"
-echo "PGPASSWORD is set: ${PGPASSWORD+set}" # Check if PGPASSWORD is set without printing value
-echo "PGDATABASE=$PGDATABASE"
-echo "-----------------------------------"
-
 RETRY_COUNT=0
 MAX_RETRIES=30
 

@@ -18,8 +18,6 @@ if (process.env.NODE_ENV !== 'production') {
 
 // Log the static file path for debugging
 const staticPath = '/app/client/build';
-console.log('Serving static files from:', staticPath);
-app.use(express.static(staticPath));
 
 // Serve Swagger API docs
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
