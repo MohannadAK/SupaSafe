@@ -3,13 +3,10 @@ set -e
 
 echo "Waiting for PostgreSQL..."
 
-# Debug: Print raw DATABASE_URL
-echo "Raw DATABASE_URL: $DATABASE_URL"
-echo "-----------------------------------"
-
-# Set PostgreSQL environment variables based on DATABASE_URL or individual variables
-if [ -n "$DATABASE_URL" ]; then
-  # Hardcode Railway production details as DATABASE_URL is not available in script
+# Set PostgreSQL environment variables based on NODE_ENV
+if [ "$NODE_ENV" = "production" ]; then
+  echo "Using production database configuration (Railway)"
+  # Hardcode Railway production details
   export PGHOST="postgres.railway.internal"
   export PGPORT="5432"
   export PGUSER="postgres"
@@ -18,7 +15,8 @@ if [ -n "$DATABASE_URL" ]; then
   export PGPASSWORD="$PGPASSWORD"
 
 else
-  # Use individual variables if DATABASE_URL is not set (for local development)
+  echo "Using non-production database configuration (local/test)"
+  # Use individual variables (for local development/test)
   export PGHOST="$DB_HOST"
   export PGPORT="$DB_PORT"
   export PGUSER="$DB_USER"
